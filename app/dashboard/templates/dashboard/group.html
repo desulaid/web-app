@@ -1,0 +1,57 @@
+{% extends 'dashboard/layout.html' %}
+{% block title %}Студенты моей группы{% endblock %}
+{% block content %}
+<div class="mt-3">
+    <h3>Моя группа</h3>
+    {% if group_exist == true %}
+    Группы есть
+    {% else %}
+    <p>Похоже, что вы еще не создали свою группу со студентам. Чтобы это сделать, просто начните вводить имена студентов своей группы.</p>
+
+    <div class="row justify-content-md-center">
+        <div class="col">
+            <form id="students-form" method="post">
+                <div class="row">
+                    <div class="col d-flex flex-row">
+                        <div class="mb-3">
+                            <a id="form-add-field" class="btn btn-sm btn-outline-dark" href="#">Добавить студента</a>
+                        </div>
+                    </div>
+                    <div class="col d-flex flex-row-reverse">
+                        <div class="mb-3">
+                            <button class="btn btn-sm btn-outline-dark" type="submit">Сохранить все</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+let id = 0
+const array =  {{ data|safe }}
+const form = document.getElementById("students-form")
+
+array.forEach(value => {
+    const groupField = addFormGroup()
+    const inputText = addInputField('', value, id++)
+    const buttonDelete = addDeleteButton(form, groupField)
+
+    groupField.appendChild(inputText)
+    groupField.appendChild(buttonDelete)
+    form.appendChild(groupField)
+})
+
+document.getElementById("form-add-field").onclick = () => {
+    const group = addFormGroup()
+    const inputText = addInputField('Введите имя студента', '', id++)
+    const buttonDelete = addDeleteButton(form, group)
+
+    group.appendChild(inputText)
+    group.appendChild(buttonDelete)
+    form.appendChild(group)
+}
+</script>
+{% endblock %}

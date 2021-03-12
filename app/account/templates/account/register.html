@@ -1,0 +1,18 @@
+{% extends 'account/layout.html' %}
+{% block title %}Регистрация{% endblock %}
+{% block content %}
+<div class="form-auth">
+    <div class="container">
+        <h1 class="h3 mb-3 fw-normal text-center">Зарегистрируйтесь</h1>
+        <form class="row" method="post">
+            {{ form.csrf_token }}
+            {{ form.name(class='form-control') }}
+            {{ form.email(class='form-control') }}
+            {{ form.password(class='form-control') }}
+            {{ form.confirm(class='form-control') }}
+            {{ form.submit(class='form-control btn btn-dark mt-3') }}
+        </form>
+        <p class="text-center mt-2">Есть аккаунта? <a href="{{ url_for('.login') }}">войдите</a> в него!</p>
+    </div>
+</div>
+{% endblock %}

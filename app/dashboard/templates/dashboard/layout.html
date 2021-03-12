@@ -1,0 +1,45 @@
+<!--
+ ___________________________
+< Коровка говорит Bootstrap >
+ ---------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+-->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}" type="image/x-icon">
+    <title>{% block title %}{% endblock %} &#183; Электронный журнал</title>
+</head>
+<body>
+    <header class="navbar navbar-dark bg-dark flex-md-nowrap p-0 shadow">
+        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="{{ url_for('.index') }}">Edusystem</a>
+        <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+            <a class="nav-link" href="{{ url_for('account.signout') }}">Выйти</a>
+        </li>
+        </ul>
+    </header>
+    <div class="nav-scroller bg-white p-o shadow-sm">
+        <nav class="nav nav-underline" aria-label="Secondary navigation">
+            <a class="nav-link text-dark" aria-current="page" href="#">Мои записи</a>
+            <a class="nav-link text-dark" href="{{ url_for('.group') }}">
+                Моя группа
+                <span class="badge bg-light text-dark rounded-pill align-text-bottom">27</span>
+            </a>
+        </nav>
+    </div>
+    <div class="container-fluid">
+        {% block content %}{% endblock %}
+    </div>
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+</body>
+</html>
