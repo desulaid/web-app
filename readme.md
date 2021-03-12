@@ -8,12 +8,12 @@
 pip install -r requirements.txt
 ```
 
-## [.flaskenv](./flaskenv.example)
-Используйте `Development` или 
+## Настройка окружения
+В зависимости от надобности, установите в [.flaskenv](./.flaskenv.example) значение `Development` или `Production`. Например,
 ```bash
+FLASK_ENV=development
 FLASK_APP=app:create_app('Development')
 ```
-
 
 ## Создание базы данных
 ```bash

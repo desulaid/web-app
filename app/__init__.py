@@ -8,9 +8,9 @@ db = SQLAlchemy()
 login_manager = LoginManager()
 
 
-def create_app():
+def create_app(settings: bool):
     app = Flask(__name__)
-    app.config.from_object('app.settings.Development')
+    app.config.from_object(f'app.settings.{settings}')
 
     db.init_app(app)
     app.cli.add_command(migrate_db)
