@@ -44,7 +44,8 @@ def add_items():
     else:
         Student.query.delete()
         for key in request.form:
-            db.session.add(Student(name=request.form[key], group_id=user_group.id))
+            if request.form[key]:
+                db.session.add(Student(name=request.form[key], group_id=user_group.id))
 
         db.session.commit()
 
