@@ -2,10 +2,12 @@
 {% block title %}Студенты моей группы{% endblock %}
 {% block content %}
 <h6 class="border-bottom pb-2 mb-0">Моя группа</h6>
-<div class="text-muted pt-3">
+<div class="pt-3">
 
     {% if group_exist == false %}
     <p>Похоже, что вы еще не создали свою группу со студентам. Чтобы это сделать, просто начните вводить имена студентов своей группы.</p>
+    {% else %}
+    <p>Сейчас в вашей группе внесено {{ count }} студента(-тов). Вы всегда можете удалить или добавить студента в группе.</p>
     {% endif %}
 
     <div class="row justify-content-md-center">

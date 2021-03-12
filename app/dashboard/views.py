@@ -25,9 +25,12 @@ def group():
     if user_group:
         group_exist = True
     group_students = Student.query.filter_by(group_id=user_group.id).all()
+    group_students_cout = len(group_students)
     form_values = [item.name for item in group_students]
 
-    context = dict(group_exist=group_exist, data=dumps(form_values))
+    context = dict(group_exist=group_exist,
+                   data=dumps(form_values),
+                   count=group_students_cout)
 
     return render_template('dashboard/group.html', **context)
 
