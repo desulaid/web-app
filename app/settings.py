@@ -13,5 +13,5 @@ class Development(Settings):
     DEBUG = False
 
 
-class Prodaction(Settings):
+class Production(Settings):
     DEBUG = True
