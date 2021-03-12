@@ -8,6 +8,13 @@
 pip install -r requirements.txt
 ```
 
+## [.flaskenv](./flaskenv.example)
+Используйте `Development` или 
+```bash
+FLASK_APP=app:create_app('Development')
+```
+
+
 ## Создание базы данных
 ```bash
 flask migrate
