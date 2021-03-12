@@ -22,6 +22,8 @@ def index():
 def group():
     user_group = Group.query.filter_by(user_id=current_user.id).first()
     group_exist = False
+    if user_group:
+        group_exist = True
     group_students = Student.query.filter_by(group_id=user_group.id).all()
     form_values = [item.name for item in group_students]
 
