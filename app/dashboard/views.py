@@ -1,6 +1,6 @@
 from json import dumps
 
-from flask import Blueprint, render_template, request, url_for
+from flask import Blueprint, render_template, request, url_for, flash
 from flask_login import current_user, login_required
 from werkzeug.utils import redirect
 
@@ -39,11 +39,15 @@ def add_items():
         Group(user_id=current_user.id)
         db.session.add(id)
         db.session.commit()
+
+        flash('Ваша группа создана.', 'success')
     else:
         Student.query.delete()
         for key in request.form:
             db.session.add(Student(name=request.form[key], group_id=user_group.id))
 
         db.session.commit()
+
+        flash('Информация о студентах обновлена.', 'warning')
     return redirect(url_for('.group'))
 
