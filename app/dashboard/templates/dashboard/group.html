@@ -3,14 +3,13 @@
 {% block content %}
 <div class="mt-3">
     <h3>Моя группа</h3>
-    {% if group_exist == true %}
-    Группы есть
-    {% else %}
+    {% if group_exist == false %}
     <p>Похоже, что вы еще не создали свою группу со студентам. Чтобы это сделать, просто начните вводить имена студентов своей группы.</p>
+    {% endif %}
 
     <div class="row justify-content-md-center">
         <div class="col">
-            <form id="students-form" method="post">
+            <form id="students-form" action="{{ url_for('.add_items') }}" method="post">
                 <div class="row">
                     <div class="col d-flex flex-row">
                         <div class="mb-3">
@@ -26,7 +25,6 @@
             </form>
         </div>
     </div>
-    {% endif %}
 </div>
 
 <script>
