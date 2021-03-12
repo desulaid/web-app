@@ -10,8 +10,8 @@ class Settings(object):
 
 
 class Development(Settings):
-    DEBUG = False
+    DEBUG = True
 
 
 class Production(Settings):
-    DEBUG = True
+    DEBUG = False
