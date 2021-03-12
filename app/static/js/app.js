@@ -1,6 +1,6 @@
 const addFormGroup = () => {
     const group = document.createElement("div")
-    group.setAttribute("class", "input-group input-group-sm mb-3")
+    group.setAttribute("class", "input-group mb-3")
 
     return group
 }
@@ -8,7 +8,7 @@ const addFormGroup = () => {
 const addDeleteButton = (formId, groupFieldId) => {
     const button = document.createElement("button")
     button.type = "button"
-    button.setAttribute("class", "btn btn-sm btn-outline-danger")
+    button.setAttribute("class", "btn btn-outline-danger")
     button.innerText = 'Удалить'
     button.onclick = () => {
         formId.removeChild(groupFieldId)
