@@ -8,7 +8,7 @@ db = SQLAlchemy()
 login_manager = LoginManager()
 
 
-def create_app(settings: bool):
+def create_app(settings):
     app = Flask(__name__)
     app.config.from_object(f'app.settings.{settings}')
 
