@@ -22,16 +22,21 @@ def index():
 def group():
     user_group = Group.query.filter_by(user_id=current_user.id).first()
     group_exist = False
+
     if user_group:
         group_exist = True
-    group_students = Student.query.filter_by(group_id=user_group.id).all()
-    group_students_cout = len(group_students)
-    form_values = [item.name for item in group_students]
 
-    context = dict(group_exist=group_exist,
-                   data=dumps(form_values),
-                   count=group_students_cout)
+    if user_group:
+        group_students = Student.query.filter_by(group_id=user_group.id).all()
+        group_students_cout = len(group_students)
+        form_values = [item.name for item in group_students]
 
+        context = dict(group_exist=group_exist,
+                       data=dumps(form_values),
+                       count=group_students_cout)
+    else:
+        context = dict(group_exist=group_exist,
+                       data=dumps([]))
     return render_template('dashboard/group.html', **context)
 
 
@@ -39,10 +44,8 @@ def group():
 @login_required
 def add_items():
     user_group = Group.query.filter_by(user_id=current_user.id).first()
-
     if not user_group:
-        Group(user_id=current_user.id)
-        db.session.add(id)
+        db.session.add(Group(user_id=current_user.id))
         db.session.commit()
 
         flash('Ваша группа создана.', 'success')
