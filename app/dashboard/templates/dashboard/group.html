@@ -21,7 +21,13 @@
                     </div>
                     <div class="col d-flex flex-row-reverse">
                         <div class="mb-3">
-                            <button class="btn btn-sm btn-outline-dark" type="submit">Сохранить все</button>
+                            <button class="btn btn-sm btn-outline-dark" type="submit">
+                            {% if group_exist == false %}
+                                Сохранить все
+                             {% else %}
+                             Обновить все
+                              {% endif %}
+                    </button>
                         </div>
                     </div>
                 </div>
