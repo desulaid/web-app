@@ -28,6 +28,18 @@ def create_app(settings):
 
     return app
 
+def account_status_db():
+    from .models import Status
+
+    statuses = [
+        'Пользователь',
+        'Администратор'
+    ]
+
+    for i in statuses:
+        db.session.add(Status(name=i))
+
+    db.session.commit()
 
 @command('migrate')
 @with_appcontext
@@ -35,3 +47,4 @@ def migrate_db():
     """Create a database"""
     db.drop_all()
     db.create_all()
+    account_status_db()
