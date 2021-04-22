@@ -12,7 +12,6 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
@@ -21,14 +20,14 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="{{ url_for('.index') }}">Edusystem</a>
-            <a class="btn btn-danger" href="{{ url_for('account.logout') }}">Выйти</a>
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('.index') }}">Журнал</a>
+            <a class="nav-link text-light" href="{{ url_for('account.logout') }}">Выйти</a>
         </div>
     </nav>
 
     <div class="nav-scroller bg--body shadow-sm">
-        <nav class="nav nav-underline">
+        <nav class="nav container nav-underline">
             <a class="nav-link {{ 'active' if request.path == url_for('.index')}}" href="{{ url_for('.index') }}">На главную</a>
             <a class="nav-link {{ 'active' if request.path == url_for('.group')}}" href="{{ url_for('.group') }}">Моя группа</a>
         </nav>
