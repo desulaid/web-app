@@ -1,62 +1,115 @@
+from calendar import monthrange
 from json import dumps
 
-from flask import Blueprint, render_template, request, url_for, flash
-from flask_login import current_user, login_required
-from werkzeug.utils import redirect
+from flask import Blueprint, render_template, redirect, url_for, flash, request
+from flask_login import current_user
 
-from app import db
-from app.models import Group, Student
+from app.database import db, Profile
 
 dashboard = Blueprint('dashboard', __name__,
                       template_folder='templates')
 
 
-@dashboard.route('/', methods=['GET', 'POST'])
-@login_required
+@dashboard.route('/', methods=['GET'])
 def index():
-    return render_template('dashboard/index.html')
+    form = ManageForm()
+    students = Profile.query.filter_by().all()
+    context = dict(
+        title='Главная страница',
+        header='Глвная',
+        data=dumps([]),
+        form=form,
+        monthrange=monthrange(2020, 4)
+    )
+    return render_template('dashboard/index.html', **context)
 
 
 @dashboard.route('/group', methods=['GET'])
-@login_required
 def group():
-    user_group = Group.query.filter_by(user_id=current_user.id).first()
-    group_exist = False
-
-    if user_group:
-        group_exist = True
-
-    if user_group:
-        group_students = Student.query.filter_by(group_id=user_group.id).all()
-        group_students_cout = len(group_students)
-        form_values = [item.name for item in group_students]
-
-        context = dict(group_exist=group_exist,
-                       data=dumps(form_values),
-                       count=group_students_cout)
-    else:
-        context = dict(group_exist=group_exist,
-                       data=dumps([]))
+    context = dict(
+        title='Студенты моей группы',
+        header='Моя группа',
+        data=dumps([])
+    )
     return render_template('dashboard/group.html', **context)
 
 
-@dashboard.route('/group-add-items', methods=['POST'])
-@login_required
-def add_items():
-    user_group = Group.query.filter_by(user_id=current_user.id).first()
-    if not user_group:
-        db.session.add(Group(user_id=current_user.id))
+@dashboard.route('/settings', methods=['GET'])
+def settings():
+    context = dict(
+        title='Настройки профиля',
+        header='Настройки',
+        current_user=current_user
+    )
+    return render_template('dashboard/settings.html', **context)
+
+
+@dashboard.route('/profile/update/<login>', methods=['POST'])
+def update_profile(login):
+    profile = Profile.query.filter_by(login=login).first()
+
+    error = None
+    name = request.form['name']
+    login = request.form['login']
+    password = request.form['password']
+    password_confirm = request.form['password-confirm']
+
+    if db.session.query(
+            Profile.query.filter_by(login=login).exists()
+    ).scalar():
+        error = 'Логин уже занят'
+    elif password != password_confirm:
+        error = 'Пароли не совпадают'
+
+    if error is None:
+        profile.name = name
+        profile.login = login
+        profile.password = password
         db.session.commit()
 
-        flash('Ваша группа создана.', 'success')
+    flash(error, 'warning')
+
+    return redirect(url_for('.settings'))
+
+
+@dashboard.route('/verify', methods=['GET'])
+def verify():
+    profiles = Profile.query.filter_by(verify=False).all()
+
+    context = dict(
+        title='Подтверждение профилей',
+        header='Верфикация',
+        profiles=profiles
+    )
+
+    return render_template('dashboard/verify.html', **context)
+
+
+@dashboard.route('/verifying/<login>', methods=['POST'])
+def verifying(login):
+    status = True if request.form['status'] == 'yes' else False
+
+    profile = Profile.query.filter_by(login=login).first()
+
+    if status:
+        profile.verify = True
+        db.session.commit()
+
+        flash(f'Аккаунт {login} подтвержен', 'success')
     else:
-        Student.query.delete()
-        for key in request.form:
-            if request.form[key]:
-                db.session.add(Student(name=request.form[key], group_id=user_group.id))
-
+        db.session.delete(profile)
         db.session.commit()
 
-        flash('Информация о студентах обновлена.', 'warning')
-    return redirect(url_for('.group'))
+        flash(f'Аккаунт {login} удален', 'warning')
 
+    return redirect(url_for('.verify'))
+
+
+@dashboard.route('/add', methods=['GET'])
+def add():
+    context = dict(
+        title='Добавить новую запись',
+        header='Новая запись',
+        data=dumps([])
+    )
+    return render_template('dashboard/add.html', **context)

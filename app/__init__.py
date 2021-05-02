@@ -1,50 +1,62 @@
+import click
 from click import command
-from flask import Flask
+from flask import Flask, current_app
 from flask.cli import with_appcontext
-from flask_login import LoginManager
-from flask_sqlalchemy import SQLAlchemy
 
-db = SQLAlchemy()
-login_manager = LoginManager()
+from .blueprints import init_blueprints
+from .database import db
+from .user import login_manager
 
 
-def create_app(settings):
+def create_app():
     app = Flask(__name__)
-    app.config.from_object(f'app.settings.{settings}')
-
+    app.config.from_object('settings')
     db.init_app(app)
-    app.cli.add_command(migrate_db)
     login_manager.init_app(app)
-
-    login_manager.login_view = 'account.login'
-    login_manager.login_message = 'Пожалуйста, авторизуйтесь'
-    login_manager.login_message_category = 'warning'
-
-    from .account import account
-    from .dashboard import dashboard
-
-    app.register_blueprint(account)
-    app.register_blueprint(dashboard)
+    app.cli.add_command(database)
+    init_blueprints(app)
 
     return app
 
-def account_status_db():
-    from .models import Status
 
-    statuses = [
-        'Пользователь',
-        'Администратор'
-    ]
+def slobkoll_data():
+    from .database import Teacher, Group
 
-    for i in statuses:
-        db.session.add(Status(name=i))
+    groups = current_app.config['COLLEGE_GROUPS']
+    teachers = current_app.config['COLLEGE_TEACHERS']
+
+    for item in groups:
+        db.session.add(Group(name=item))
+
+    for item in teachers:
+        db.session.add(Teacher(name=item))
 
     db.session.commit()
 
-@command('migrate')
+
+def create_admin():
+    from .database import Profile
+
+    data = current_app.config['ADMIN_PROFILE']
+    login = data['login']
+    password = data['password']
+    name = data['name']
+    admin = Profile(name=name,
+                    login=login,
+                    password=password,
+                    verify=True)
+    db.session.add(admin)
+    db.session.commit()
+
+    return login, password
+
+
+@command('database')
 @with_appcontext
-def migrate_db():
-    """Create a database"""
+def database():
+    """Создать базу данных"""
     db.drop_all()
     db.create_all()
-    account_status_db()
+    login, password = create_admin()
+    click.echo(f'Данные от админисратора: {login}: {password}')
+    slobkoll_data()

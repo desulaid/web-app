@@ -1,4 +1,4 @@
-{% extends 'account/layout.html' %}
+{% extends 'user/layout.html' %}
 {% block content %}
 <div class="container">
     <p class="text-center">Вы вышли из аккаунта, через 2 секунд вы будете перенаправленны на страницу авторизации.</p>
@@ -7,5 +7,6 @@
 window.setTimeout(function(){
     window.location.href = "{{ url_for('.login') }}";
 }, 2000)
- </script>
+
+</script>
 {% endblock %}

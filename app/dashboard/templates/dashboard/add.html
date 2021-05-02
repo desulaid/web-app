@@ -1,0 +1,86 @@
+{% extends 'dashboard/layout.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <div class="row align-items-center">
+        <div class="col">
+            <h3>{{ header }}</h3>
+        </div>
+        <div class="col">
+            <div class="d-flex justify-content-end">
+                <label class="nav-link text-dark sumbit-form" for="hidden-submit">Сохранить</label>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2 border-bottom  ">
+        <div class="col-md mb-2">
+            <div class="table-responsive">
+                <form>
+                    <small class="text-muted">Укажите название занятия</small>
+                    <div class="input-group input-group-sm mb-3 mt-2">
+                        <span class="input-group-text" id="post-name-id">
+                            <span class="material-icons">
+                                notes
+                            </span>
+                        </span>
+                        <input class="form-control" id="post-name-id" name="post-name" title="Название занятия"
+                               type="text">
+                    </div>
+                    <small class="text-muted">Выберите дату и время занятия</small>
+                    <div class="input-group input-group-sm mb-3 mt-2">
+                        <span class="input-group-text" id="post-date-id">
+                            <span class="material-icons">
+                                calendar_today
+                            </span>
+                        </span>
+                        <input class="form-control" id="post-date-id" name="post-date" title="Дата занятия" type="date">
+
+                        <span class="input-group-text" id="post-time-id">
+                            <span class="material-icons">
+                                access_time
+                            </span>
+                        </span>
+                        <input class="form-control" id="post-time-id" name="post-time" title="Время занятия"
+                               type="time">
+                    </div>
+                    <small class="text-muted">Отметьте всех студентов по списку</small>
+                    <table class="table table-bordered table-hover mt-2">
+                        <thead>
+                        <tr>
+                            <td>Студент</td>
+                            <td>Нахождение</td>
+                            <td>Причина</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td scope="row">Стяжкин Антон Владимирович</td>
+                            <td>Присутствовал</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td scope="row">Нестяжкин Антон Владимирович</td>
+                            <td>Отстустсовал</td>
+                            <td>Болеет (справка)</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <input id="hidden-submit" type="submit" value="submit"/>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    #hidden-submit {
+        width: 0px;
+        height: 0px;
+        opacity: 0;
+    }
+
+    .sumbit-form {
+        cursor: pointer;
+    }
+
+</style>
+{% endblock %}

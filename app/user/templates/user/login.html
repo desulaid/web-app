@@ -1,12 +1,12 @@
-{% extends 'account/layout.html' %}
-{% block title %}Авторизация{% endblock %}
+{% extends 'user/layout.html' %}
+{% block title %}{{ title }}{% endblock %}
 {% block content %}
 <div class="form-auth">
-    <div class="container">
-        <h1 class="h3 mb-3 fw-normal text-center">Авторизуйтесь</h1>
+    <div class="container  text-center">
+        <h1 class="h3 mb-3 fw-norma">{{ header }}</h1>
         <form class="row" method="post">
             {{ form.csrf_token }}
-            {{ form.email(class='form-control') }}
+            {{ form.login(class='form-control') }}
             {{ form.password(class='form-control') }}
             {{ form.submit(class='form-control btn btn-dark mt-3') }}
         </form>

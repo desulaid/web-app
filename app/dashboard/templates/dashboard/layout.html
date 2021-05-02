@@ -1,57 +1,59 @@
-<!--
- ___________________________
-< Коровка говорит Bootstrap >
- ---------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
--->
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link href="{{ url_for('static', filename='css/app.css') }}" rel="stylesheet">
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
-    <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}" type="image/x-icon">
     <title>{% block title %}{% endblock %} &#183; Электронный журнал</title>
 </head>
+
 <body>
-    <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="{{ url_for('.index') }}">Журнал</a>
-            <a class="nav-link text-light" href="{{ url_for('account.logout') }}">Выйти</a>
-        </div>
-    </nav>
 
-    <div class="nav-scroller bg--body shadow-sm">
-        <nav class="nav container nav-underline">
-            <a class="nav-link {{ 'active' if request.path == url_for('.index')}}" href="{{ url_for('.index') }}">На главную</a>
-            <a class="nav-link {{ 'active' if request.path == url_for('.group')}}" href="{{ url_for('.group') }}">Моя группа</a>
-        </nav>
-    </div>
-
+<nav aria-label="Main navigation" class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-        <div class="row">
-            {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-            {% for category, message in messages %}
-            <div class="alert alert-{{ category }} alert-dismissible fade show mt-3 ml-3" role="alert">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            {% endfor %}
-            {% endif %}
-            {% endwith %}
-        </div>
-        <div class="row">
-            <div class="my-3 p-3 bg-body rounded shadow-sm">
-            {% block content %}{% endblock %}
-            </div>
+        <a class="navbar-brand" href="{{ url_for('.index') }}">
+            Журнал посещаемости
+        </a>
+        <div class="d-flex">
+            <a class="nav-link text-dark" href="{{ url_for('user.logout') }}">Выйти</a>
         </div>
     </div>
-    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+</nav>
+
+<div class="nav-scroller bg-body border-top border-bottom">
+    <nav aria-label="Secondary navigation" class="nav container nav-underline">
+        <a class="nav-link {{ 'active' if request.path == url_for('.index')}}"
+           href="{{ url_for('.index') }}">Главная</a>
+        <a class="nav-link {{ 'active' if request.path == url_for('.add')}}" href="{{ url_for('.add') }}">
+            Создать запись</a>
+        <a class="nav-link {{ 'active' if request.path == url_for('.group')}}" href="{{ url_for('.group') }}">
+            Моя группа</a>
+        <a class="nav-link {{ 'active' if request.path == url_for('.verify')}}" href="{{ url_for('.verify') }}">
+            Ожидают подтверждения</a>
+        <a class="nav-link {{ 'active' if request.path == url_for('.settings')}}" href="{{ url_for('.settings') }}">
+            Настройки</a>
+    </nav>
+</div>
+
+
+<div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }} alert-dismissible fade show mt-3" role="alert">
+        {{ message }}
+        <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+</div>
+
+{% block content %}{% endblock %}
+
 </body>
+<script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+
 </html>

@@ -1,0 +1,49 @@
+{% extends 'dashboard/layout.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <div class="row align-items-center">
+        <div class="col">
+            <h3>{{ header }}</h3>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <small class="text-muted">
+            Неподтвержденные аккаунты не могут пользоваться сайтом, чтобы аккаунт получил доступ к сайту и всем его
+            функциям, подтвердите или отклоните его заявку.
+        </small>
+    </div>
+    <div class="row mt-2 border-bottom">
+        <div class="col-md">
+            <div class="table-responsive">
+                <table class="table table-borderless table-hover">
+                    <thead>
+                    <tr>
+                        <td>ФИО</td>
+                        <td>Ответить</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in profiles %}
+                    <tr>
+                        <td scope="row">{{ item.name }}</td>
+                        <td>
+                            <form action="{{ url_for('.verifying', login=item.login) }}" method="post">
+                                <div class="input-group">
+                                    <select class="form-select form-select-sm" id="button-addon1" name="status">
+                                        <option value="yes">Подтвердить</option>
+                                        <option value="no">Отклонить</option>
+                                    </select>
+                                    <button class="btn btn-sm btn-primary" type="submit">Отправить</button>
+                                </div>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

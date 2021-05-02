@@ -1,0 +1,67 @@
+{% extends 'dashboard/layout.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <div class="row align-items-center">
+        <div class="col">
+            <h3>{{ header }}</h3>
+        </div>
+    </div>
+    <div class="row mt-2 border-bottom">
+        <div class="col-md">
+            <p>Аккаунт</p>
+        </div>
+        <div class="col-md mb-2">
+            <form action="{{ url_for('.update_profile', login=current_user.login) }}" method="post">
+                <div class="mb-3">
+                    <label class="form-label" for="user-name">Имя пользователя</label>
+                    <input class="form-control form-control-sm" id="user-name" name="name" type="text"
+                           value="{{ current_user.name }}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="user-login">Логин</label>
+                    <input class="form-control form-control-sm" id="user-login" name="login"
+                           type="text" value="{{ current_user.login }}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="user-password">Новый пароль</label>
+                    <input class="form-control form-control-sm mb-2" id="user-password" name="password" type="password">
+                    <input class="form-control form-control-sm" id="user-password" name="password-confirm"
+                           type="password">
+                </div>
+                <div class="mb-3">
+                    <button class="btn btn-sm btn-outline-success" type="submit">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row mt-2 border-bottom">
+        <div class="col-md">
+            <p>Профессиональные</p>
+            <small class="text-muted">Проф. настройки ориентированны на обеспечение целостной информации в
+                экспортируемых данных для отчетов.</small>
+        </div>
+        <div class="col-md mb-2">
+            <form>
+                <div class="mb-3">
+                    <label class="form-label" for="group-name">Название группы</label>
+                    <select class="form-select form-select-sm" id="group-name" name="hero">
+                        <option disabled>Выберите героя</option>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="group-owner">Классный руководитель</label>
+                    <input class="form-control form-control-sm" id="group-owner" type="text">
+                </div>
+                <div class="mb-3">
+                    <button class="btn btn-sm btn-outline-success" type="submit">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
