@@ -13,14 +13,15 @@
                     <span class="material-icons">more_vert</span>
                 </a>
                 <ul aria-labelledby="dropdownMenuButton1" class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Сохранить</a></li>
+                    <li><label class="nav-link text-dark sumbit-form" for="hidden-submit">Сохранить</label></li>
                     <li><a class="dropdown-item" href="#">Экспортировать</a></li>
                 </ul>
             </div>
         </div>
     </div>
     <div class="row mt-2">
-        <form id="students-form">
+        <form id="students-form" action="{{ url_for('.group_save', id=current_user.id) }}" method="post">
+            <input id="hidden-submit" type="submit" value="submit"/>
         </form>
     </div>
 </div>
@@ -51,4 +52,15 @@ document.getElementById("form-add-field").onclick = () => {
 }
 
 </script>
+<style>
+    #hidden-submit {
+        width: 0px;
+        height: 0px;
+        opacity: 0;
+    }
+
+    .sumbit-form {
+        cursor: pointer;
+    }
+</style>
 {% endblock %}

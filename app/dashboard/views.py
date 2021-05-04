@@ -4,7 +4,7 @@ from json import dumps
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import current_user
 
-from app.database import db, Profile
+from app.database import db, Profile, Group, Teacher, Student
 
 dashboard = Blueprint('dashboard', __name__,
                       template_folder='templates')
@@ -21,31 +21,80 @@ def index():
         form=form,
         monthrange=monthrange(2020, 4)
     )
+
     return render_template('dashboard/index.html', **context)
 
 
 @dashboard.route('/group', methods=['GET'])
 def group():
+    students = Student.query.filter_by(master_id=current_user.id).all()
+
     context = dict(
         title='Студенты моей группы',
         header='Моя группа',
-        data=dumps([])
+        data=dumps([i.name for i in students]),
+        current_user=current_user,
     )
+
     return render_template('dashboard/group.html', **context)
+
+
+@dashboard.route('/group/<id>', methods=['POST'])
+def group_save(id):
+    Student.query.delete()
+
+    for key in request.form:
+        if request.form[key]:
+            db.session.add(Student(name=request.form[key], master_id=current_user.id))
+
+    db.session.commit()
+
+    return redirect(url_for('.group'))
 
 
 @dashboard.route('/settings', methods=['GET'])
 def settings():
+    groups = Group.query.all()
+    teachers = Teacher.query.all()
+
     context = dict(
         title='Настройки профиля',
         header='Настройки',
-        current_user=current_user
+        current_user=current_user,
+        groups=groups,
+        teachers=teachers
     )
+
     return render_template('dashboard/settings.html', **context)
 
 
-@dashboard.route('/profile/update/<login>', methods=['POST'])
-def update_profile(login):
+@dashboard.route('/profile/update/<login>/prof', methods=['POST'])
+def update_profile_prof(login):
+    profile = Profile.query.filter_by(login=login).first()
+
+    error = None
+    group_id = request.form['group-id']
+    group_teacher_id = request.form['group-teacher']
+    group_name = Group.query.get(group_id)
+
+    if db.session.query(
+        Profile.query.filter_by(group_id=group_id,
+                                teacher_id=group_teacher_id).exists()
+    ).scalar():
+        error = f'Староста группы { group_name.name } уже назначен'
+
+    if error is None:
+        profile.group_id = group_id
+        profile.teacher_id = group_teacher_id
+        db.session.commit()
+    else:
+        flash(error, 'warning')
+
+    return redirect(url_for('.settings'))
+
+
+@dashboard.route('/profile/update/<login>/main', methods=['POST'])
+def update_profile_main(login):
     profile = Profile.query.filter_by(login=login).first()
 
     error = None
@@ -66,8 +115,8 @@ def update_profile(login):
         profile.login = login
         profile.password = password
         db.session.commit()
-
-    flash(error, 'warning')
+    else:
+        flash(error, 'warning')
 
     return redirect(url_for('.settings'))
 

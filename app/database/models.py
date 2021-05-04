@@ -24,12 +24,13 @@ class Profile(db.Model):
         "teachers.id"), nullable=True)
     teacher = db.relationship("Teacher", foreign_keys=[teacher_id])
 
-    def __init__(self, login, password, name, verify, group_id=None):
+    def __init__(self, login, password, name, verify, group_id=None, teacher_id=None):
         self.login = login
         self.password = password
         self.name = name
         self.verify = verify
         self.group_id = group_id
+        self.teacher_id = teacher_id
 
     @hybrid_property
     def password(self):
@@ -50,13 +51,13 @@ class Student(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(256), nullable=True)
 
-    group_id = db.Column(db.Integer, db.ForeignKey(
-        "groups.id"), nullable=True)
-    group = db.relationship("Group", foreign_keys=[group_id])
+    master_id = db.Column(db.Integer, db.ForeignKey(
+        "profiles.id"), nullable=True)
+    master = db.relationship("Profile", foreign_keys=[master_id])
 
-    def __init__(self, name, group_id=None):
+    def __init__(self, name, master_id=None):
         self.name = name
-        self.group_id = group_id
+        self.master_id = master_id
 
 
 # Преподаватели (классный руководитель)
@@ -98,3 +99,5 @@ class Post(db.Model):
         self.date = date
         self.comment = comment
         self.group_id = group_id
+
+
