@@ -99,5 +99,3 @@ class Post(db.Model):
         self.date = date
         self.comment = comment
         self.group_id = group_id
-
-

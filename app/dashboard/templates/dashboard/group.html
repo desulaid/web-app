@@ -20,7 +20,7 @@
         </div>
     </div>
     <div class="row mt-2">
-        <form id="students-form" action="{{ url_for('.group_save', id=current_user.id) }}" method="post">
+        <form action="{{ url_for('.group_save', id=current_user.id) }}" id="students-form" method="post">
             <input id="hidden-submit" type="submit" value="submit"/>
         </form>
     </div>
@@ -51,6 +51,7 @@ document.getElementById("form-add-field").onclick = () => {
     form.appendChild(group)
 }
 
+
 </script>
 <style>
     #hidden-submit {
@@ -62,5 +63,6 @@ document.getElementById("form-add-field").onclick = () => {
     .sumbit-form {
         cursor: pointer;
     }
+
 </style>
 {% endblock %}

@@ -78,10 +78,10 @@ def update_profile_prof(login):
     group_name = Group.query.get(group_id)
 
     if db.session.query(
-        Profile.query.filter_by(group_id=group_id,
-                                teacher_id=group_teacher_id).exists()
+            Profile.query.filter_by(group_id=group_id,
+                                    teacher_id=group_teacher_id).exists()
     ).scalar():
-        error = f'Староста группы { group_name.name } уже назначен'
+        error = f'Староста группы {group_name.name} уже назначен'
 
     if error is None:
         profile.group_id = group_id

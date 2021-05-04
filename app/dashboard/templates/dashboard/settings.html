@@ -47,11 +47,11 @@
                     <label class="form-label" for="group-id">Название группы</label>
                     <select class="form-select form-select-sm" id="group-id" name="group-id">
                         {% for i in groups %}
-                            {% if current_user.group_id == i.id %}
-                                <option value="{{ i.id }}" selected>{{ i.name }}</option>
-                            {% else %}
-                                 <option value="{{ i.id }}">{{ i.name }}</option>
-                            {% endif %}
+                        {% if current_user.group_id == i.id %}
+                        <option selected value="{{ i.id }}">{{ i.name }}</option>
+                        {% else %}
+                        <option value="{{ i.id }}">{{ i.name }}</option>
+                        {% endif %}
                         <option value="{{ i.id }}">{{ i.name }}</option>
                         {% endfor %}
                     </select>
@@ -60,11 +60,11 @@
                     <label class="form-label" for="group-teacher">Классный руководитель</label>
                     <select class="form-select form-select-sm" id="group-teacher" name="group-teacher">
                         {% for i in teachers %}
-                            {% if current_user.teacher_id == i.id %}
-                                <option value="{{ i.id }}" selected>{{ i.name }}</option>
-                            {% else %}
-                                <option value="{{ i.id }}">{{ i.name }}</option>
-                            {% endif %}
+                        {% if current_user.teacher_id == i.id %}
+                        <option selected value="{{ i.id }}">{{ i.name }}</option>
+                        {% else %}
+                        <option value="{{ i.id }}">{{ i.name }}</option>
+                        {% endif %}
                         {% endfor %}
                     </select>
                 </div>
