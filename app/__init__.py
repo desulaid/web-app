@@ -3,9 +3,8 @@ from click import command
 from flask import Flask, current_app
 from flask.cli import with_appcontext
 
-from .blueprints import init_blueprints
 from .database import db
-from .user import login_manager
+from .profile import login_manager
 
 
 def create_app():
@@ -14,7 +13,12 @@ def create_app():
     db.init_app(app)
     login_manager.init_app(app)
     app.cli.add_command(database)
-    init_blueprints(app)
+
+    from .dashboard import dashboard
+    from .profile import profile
+
+    app.register_blueprint(dashboard)
+    app.register_blueprint(profile)
 
     return app
 

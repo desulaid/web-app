@@ -6,12 +6,12 @@ from app.database.models import Profile
 from .forms import LoginForm, RegisterForm
 from .login_manager import UserLogin
 
-user = Blueprint('user', __name__,
-                 template_folder='templates',
-                 url_prefix='/auth')
+profile = Blueprint('profile', __name__,
+                    template_folder='templates',
+                    url_prefix='/auth')
 
 
-@user.route('/login', methods=['GET', 'POST'])
+@profile.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
 
@@ -21,15 +21,18 @@ def login():
         password = form.password.data
         account = UserLogin.query.filter_by(login=login).first()
 
-        if account is None or not account.check_password(password):
-            error = 'Неправильная почта или пароль.'
+        if account is None:
+            error = f'Аккаунт {login} не зарегистрирован в системе'
+        else:
+            if not account.verify:
+                error = 'Ваш аккаунт не подтвержден. Ожидайте.'
 
-        if not account.verify:
-            error = 'Ваш аккаунт не подтвержден. Ожидайте.'
+            if not account.check_password(password):
+                error = 'Неправильный пароль.'
 
-        if error is None:
-            login_user(account, remember=True)
-            return redirect(url_for('dashboard.index'))
+            if error is None:
+                login_user(account, remember=True)
+                return redirect(url_for('dashboard.index'))
 
         flash(error, 'warning')
 
@@ -39,10 +42,10 @@ def login():
         form=form
     )
 
-    return render_template('user/login.html', **context)
+    return render_template('profile/login.html', **context)
 
 
-@user.route('/register', methods=['GET', 'POST'])
+@profile.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm()
 
@@ -76,12 +79,12 @@ def register():
         form=form
     )
 
-    return render_template('user/register.html', **context)
+    return render_template('profile/register.html', **context)
 
 
-@user.route('/logout', methods=['GET'])
+@profile.route('/logout', methods=['GET'])
 def logout():
     user = current_user
     user.authenticated = False
     logout_user()
-    return render_template('user/redirect.html')
+    return render_template('profile/redirect.html')

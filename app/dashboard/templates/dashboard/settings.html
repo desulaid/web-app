@@ -12,7 +12,7 @@
             <p>Аккаунт</p>
         </div>
         <div class="col-md mb-2">
-            <form action="{{ url_for('.update_profile', login=current_user.login) }}" method="post">
+            <form action="{{ url_for('.update_profile_main', login=current_user.login) }}" method="post">
                 <div class="mb-3">
                     <label class="form-label" for="user-name">Имя пользователя</label>
                     <input class="form-control form-control-sm" id="user-name" name="name" type="text"
@@ -26,7 +26,7 @@
                 <div class="mb-3">
                     <label class="form-label" for="user-password">Новый пароль</label>
                     <input class="form-control form-control-sm mb-2" id="user-password" name="password" type="password">
-                    <input class="form-control form-control-sm" id="user-password" name="password-confirm"
+                    <input class="form-control form-control-sm" id="user-confirm" name="password-confirm"
                            type="password">
                 </div>
                 <div class="mb-3">
@@ -42,19 +42,31 @@
                 экспортируемых данных для отчетов.</small>
         </div>
         <div class="col-md mb-2">
-            <form>
+            <form action="{{ url_for('.update_profile_prof', login=current_user.login) }}" method="post">
                 <div class="mb-3">
-                    <label class="form-label" for="group-name">Название группы</label>
-                    <select class="form-select form-select-sm" id="group-name" name="hero">
-                        <option disabled>Выберите героя</option>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
+                    <label class="form-label" for="group-id">Название группы</label>
+                    <select class="form-select form-select-sm" id="group-id" name="group-id">
+                        {% for i in groups %}
+                            {% if current_user.group_id == i.id %}
+                                <option value="{{ i.id }}" selected>{{ i.name }}</option>
+                            {% else %}
+                                 <option value="{{ i.id }}">{{ i.name }}</option>
+                            {% endif %}
+                        <option value="{{ i.id }}">{{ i.name }}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label" for="group-owner">Классный руководитель</label>
-                    <input class="form-control form-control-sm" id="group-owner" type="text">
+                    <label class="form-label" for="group-teacher">Классный руководитель</label>
+                    <select class="form-select form-select-sm" id="group-teacher" name="group-teacher">
+                        {% for i in teachers %}
+                            {% if current_user.teacher_id == i.id %}
+                                <option value="{{ i.id }}" selected>{{ i.name }}</option>
+                            {% else %}
+                                <option value="{{ i.id }}">{{ i.name }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
                 </div>
                 <div class="mb-3">
                     <button class="btn btn-sm btn-outline-success" type="submit">Сохранить</button>
