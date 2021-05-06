@@ -24,4 +24,4 @@ class UserLogin(Profile, UserMixin):
 
 @login_manager.user_loader
 def load_user(user_id):
-    return Profile.query.get(user_id)
+    return UserLogin.query.get(user_id)
