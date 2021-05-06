@@ -1,9 +1,8 @@
-from calendar import monthrange
 from json import dumps
 from re import match
 from datetime import datetime
 
-from flask import Blueprint, render_template, redirect, url_for, flash, request
+from flask import Blueprint, render_template, redirect, url_for, flash, request, abort
 from flask_login import current_user, login_required
 
 from app.database import db, Profile, Group, Teacher, Student, Post
@@ -117,6 +116,9 @@ def update_profile_main(login):
 @dashboard.route('/verify', methods=['GET'])
 @login_required
 def verify():
+    if current_user.id != 1:
+        abort(404)
+
     profiles = Profile.query.filter_by(verify=False).all()
 
     context = dict(
