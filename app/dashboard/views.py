@@ -29,7 +29,7 @@ def group():
 @dashboard.route('/group/<id>', methods=['POST'])
 @login_required
 def group_save(id):
-    Student.query.delete()
+    Student.query.filter_by(master_id=id).delete()
 
     for key in request.form:
         if request.form[key]:
