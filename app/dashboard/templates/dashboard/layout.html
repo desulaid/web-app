@@ -28,8 +28,10 @@
             Создать запись</a>
         <a class="nav-link {{ 'active' if request.path == url_for('.group')}}" href="{{ url_for('.group') }}">
             Моя группа</a>
+        {% if current_user.id == 1 %}
         <a class="nav-link {{ 'active' if request.path == url_for('.verify')}}" href="{{ url_for('.verify') }}">
             Ожидают подтверждения</a>
+        {% endif %}
         <a class="nav-link {{ 'active' if request.path == url_for('.settings')}}" href="{{ url_for('.settings') }}">
             Настройки</a>
     </nav>
