@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, flash
-from flask_login import login_user, current_user, logout_user
+from flask_login import login_user, current_user, logout_user, login_required
 
 from app.database import db
 from app.database.models import Profile
@@ -83,6 +83,7 @@ def register():
 
 
 @profile.route('/logout', methods=['GET'])
+@login_required
 def logout():
     user = current_user
     user.authenticated = False

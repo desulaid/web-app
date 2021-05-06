@@ -4,7 +4,7 @@ from re import match
 from datetime import datetime
 
 from flask import Blueprint, render_template, redirect, url_for, flash, request
-from flask_login import current_user
+from flask_login import current_user, login_required
 
 from app.database import db, Profile, Group, Teacher, Student, Post
 
@@ -12,8 +12,8 @@ dashboard = Blueprint('dashboard', __name__,
                       template_folder='templates')
 
 
-
 @dashboard.route('/group', methods=['GET'])
+@login_required
 def group():
     students = Student.query.filter_by(master_id=current_user.id).all()
 
@@ -28,12 +28,14 @@ def group():
 
 
 @dashboard.route('/group/<id>', methods=['POST'])
+@login_required
 def group_save(id):
     Student.query.delete()
 
     for key in request.form:
         if request.form[key]:
-            db.session.add(Student(name=request.form[key], master_id=current_user.id))
+            db.session.add(
+                Student(name=request.form[key], master_id=current_user.id))
 
     db.session.commit()
 
@@ -41,6 +43,7 @@ def group_save(id):
 
 
 @dashboard.route('/settings', methods=['GET'])
+@login_required
 def settings():
     groups = Group.query.all()
     teachers = Teacher.query.all()
@@ -57,6 +60,7 @@ def settings():
 
 
 @dashboard.route('/profile/update/<login>/prof', methods=['POST'])
+@login_required
 def update_profile_prof(login):
     profile = Profile.query.filter_by(login=login).first()
 
@@ -82,6 +86,7 @@ def update_profile_prof(login):
 
 
 @dashboard.route('/profile/update/<login>/main', methods=['POST'])
+@login_required
 def update_profile_main(login):
     profile = Profile.query.filter_by(login=login).first()
 
@@ -110,6 +115,7 @@ def update_profile_main(login):
 
 
 @dashboard.route('/verify', methods=['GET'])
+@login_required
 def verify():
     profiles = Profile.query.filter_by(verify=False).all()
 
@@ -123,6 +129,7 @@ def verify():
 
 
 @dashboard.route('/verifying/<login>', methods=['POST'])
+@login_required
 def verifying(login):
     status = True if request.form['status'] == 'yes' else False
 
@@ -143,6 +150,7 @@ def verifying(login):
 
 
 @dashboard.route('/add', methods=['GET'])
+@login_required
 def add():
     students = Student.query.filter_by(master_id=current_user.id).all()
 
@@ -151,11 +159,14 @@ def add():
         header='Новая запись',
         students=students
     )
-    
+
     return render_template('dashboard/add.html', **context)
 
 # Убогий говнокод, но зато работает :)
+
+
 @dashboard.route('/post/save', methods=['POST'])
+@login_required
 def post_save():
     form = dict(request.form)
     name = form['post-name']
@@ -169,7 +180,6 @@ def post_save():
         post.append(bool(request.form[f'student-{data.group(1)}-attended']))
         post.append(request.form[f'student-{data.group(1)}-comment'])
         posts_dict[f'{data.group(1)}'] = post
-
 
     for student in posts_dict:
         post = Post()
