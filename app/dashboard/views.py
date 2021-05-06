@@ -12,20 +12,6 @@ dashboard = Blueprint('dashboard', __name__,
                       template_folder='templates')
 
 
-@dashboard.route('/', methods=['GET'])
-def index():
-    form = ManageForm()
-    students = Profile.query.filter_by().all()
-    context = dict(
-        title='Главная страница',
-        header='Глвная',
-        data=dumps([]),
-        form=form,
-        monthrange=monthrange(2020, 4)
-    )
-
-    return render_template('dashboard/index.html', **context)
-
 
 @dashboard.route('/group', methods=['GET'])
 def group():
