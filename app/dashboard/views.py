@@ -193,4 +193,7 @@ def post_save():
         db.session.add(post)
 
     db.session.commit()
-    return f'{posts_dict}'
+
+    flash('Запись добавлена', 'success')
+
+    return redirect(url_for('.add'))
