@@ -88,10 +88,34 @@ class Post(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(256), nullable=True)
+    datetime = db.Column(db.DateTime, nullable=False)
+
+    author_id = db.Column(db.Integer, db.ForeignKey(
+        "profiles.id"), nullable=False)
+    author = db.relationship("Profile", foreign_keys=[author_id])
+
+    def __init__(self, name, datetime, author_id):
+        self.name = name
+        self.datetime = datetime
+        self.author_id = author_id
+
+class Archive(db.Model):
+    __tablename__ = 'archive'
+
+    id = db.Column(db.Integer, primary_key=True)
+    comment = db.Column(db.String(256), nullable=True)
+    attended = db.Column(db.Boolean, nullable=False)
+
+    post_id = db.Column(db.Integer, db.ForeignKey(
+        "posts.id"), nullable=False)
+    post = db.relationship("Post", foreign_keys=[post_id])
+
     student_id = db.Column(db.Integer, db.ForeignKey(
         "students.id"), nullable=True)
     student = db.relationship("Student", foreign_keys=[student_id])
 
-    datetime = db.Column(db.DateTime, nullable=False)
-    comment = db.Column(db.String(256), nullable=True)
-    attended = db.Column(db.Boolean, nullable=False)
+    def __init__(self, comment, attended, student_id, post_id):
+        self.comment = comment
+        self.attended = attended
+        self.student_id = student_id
+        self.post_id = post_id

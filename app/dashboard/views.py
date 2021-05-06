@@ -5,7 +5,7 @@ from datetime import datetime
 from flask import Blueprint, render_template, redirect, url_for, flash, request, abort
 from flask_login import current_user, login_required
 
-from app.database import db, Profile, Group, Teacher, Student, Post
+from app.database import db, Profile, Group, Teacher, Student, Post, Archive
 
 dashboard = Blueprint('dashboard', __name__,
                       template_folder='templates')
@@ -37,6 +37,8 @@ def group_save(id):
                 Student(name=request.form[key], master_id=current_user.id))
 
     db.session.commit()
+
+    flash('Список студентов обновлен', 'success')
 
     return redirect(url_for('.group'))
 
@@ -151,7 +153,7 @@ def verifying(login):
     return redirect(url_for('.verify'))
 
 
-@dashboard.route('/create', methods=['GET'])
+@dashboard.route('/post/create', methods=['GET'])
 @login_required
 def create_post():
     students = Student.query.filter_by(master_id=current_user.id).all()
@@ -164,36 +166,63 @@ def create_post():
 
     return render_template('dashboard/create_post.html', **context)
 
+@dashboard.route('/post/archive', methods=['GET'])
+@login_required
+def archive_posts():
+
+    posts = []
+    for i in Post.query.filter_by(author_id=current_user.id).all():
+        posts.append({
+            'id': i.id,
+            'name': i.name,
+            'date': i.datetime.strftime("%d-%m-%Y, %H:%M"),
+            'archive': 
+                [i for i in Archive.query.filter_by(post_id=i.id).all()]
+            
+        })
+
+    context = dict(
+        title='Список записей',
+        header='Записи',
+        posts=posts
+    )
+
+    return render_template('dashboard/archive.html', **context)
+
 # Убогий говнокод, но зато работает :)
-
-
 @dashboard.route('/post/save', methods=['POST'])
 @login_required
 def post_save():
     form = dict(request.form)
     name = form['post-name']
-    posts_dict = {}
     del form['post-name']
-
-    for key in form:
-        data = match(r'student\-(\d+)\-(.+)', str(key))
-        post = []
-        post.append(datetime.now())
-        post.append(bool(request.form[f'student-{data.group(1)}-attended']))
-        post.append(request.form[f'student-{data.group(1)}-comment'])
-        posts_dict[f'{data.group(1)}'] = post
-
-    for student in posts_dict:
-        post = Post()
-        post.name = name
-        post.student_id = student
-        post.datetime = posts_dict[student][0]
-        post.attended = posts_dict[student][1]
-        post.comment = posts_dict[student][2]
+    
+    if not name:
+        flash('Название записи обязатнльео к заполнению', 'warning')
+    else:
+        post= Post(name=name, datetime=datetime.now(), author_id=current_user.id)
         db.session.add(post)
+        db.session.commit()
 
-    db.session.commit()
+        posts_dict = {}
 
-    flash('Запись добавлена', 'success')
+        for key in form:
+            data = match(r'student\-(\d+)\-(.+)', str(key))
+            item = []
+            item.append(bool(request.form[f'student-{data.group(1)}-attended']))
+            item.append(request.form[f'student-{data.group(1)}-comment'])
+            posts_dict[f'{data.group(1)}'] = item
 
-    return redirect(url_for('.add'))
+        for student in posts_dict:
+            db.session.add(Archive(
+                student_id=student,
+                attended=posts_dict[student][0],
+                comment=posts_dict[student][1],
+                post_id=post.id
+            ))
+
+        db.session.commit()
+
+        flash('Запись добавлена', 'success')
+
+    return redirect(url_for('.create_post'))

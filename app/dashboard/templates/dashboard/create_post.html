@@ -4,7 +4,7 @@
 <div class="container mt-4">
     <div class="row align-items-center">
         <div class="col">
-            <h3>{{ header }}</h3>
+            <h3>{{ header }} / <a class="text-decoration-none" href="{{ url_for('.archive_posts') }}">Архив</a></h3>
         </div>
         <div class="col">
             <div class="d-flex justify-content-end">
@@ -12,7 +12,7 @@
             </div>
         </div>
     </div>
-    <div class="row mt-2 border-bottom  ">
+    <div class="row mt-2 border-bottom">
         <div class="col-md mb-2">
             <div class="table-responsive">
                 <form method="post" action="{{ url_for('.post_save') }}">
