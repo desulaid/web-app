@@ -32,7 +32,7 @@ def login():
 
             if error is None:
                 login_user(account, remember=True)
-                return redirect(url_for('dashboard.index'))
+                return redirect(url_for('dashboard.settings'))
 
         flash(error, 'warning')
 
