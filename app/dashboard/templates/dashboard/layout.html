@@ -24,7 +24,7 @@
 
 <div class="nav-scroller bg-body border-top border-bottom">
     <nav aria-label="Secondary navigation" class="nav container nav-underline">
-        <a class="nav-link {{ 'active' if request.path == url_for('.add')}}" href="{{ url_for('.add') }}">
+        <a class="nav-link {{ 'active' if request.path == url_for('.create_post')}}" href="{{ url_for('.create_post') }}">
             Создать запись</a>
         <a class="nav-link {{ 'active' if request.path == url_for('.group')}}" href="{{ url_for('.group') }}">
             Моя группа</a>

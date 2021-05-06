@@ -151,9 +151,9 @@ def verifying(login):
     return redirect(url_for('.verify'))
 
 
-@dashboard.route('/add', methods=['GET'])
+@dashboard.route('/create', methods=['GET'])
 @login_required
-def add():
+def create_post():
     students = Student.query.filter_by(master_id=current_user.id).all()
 
     context = dict(
@@ -162,7 +162,7 @@ def add():
         students=students
     )
 
-    return render_template('dashboard/add.html', **context)
+    return render_template('dashboard/create_post.html', **context)
 
 # Убогий говнокод, но зато работает :)
 
