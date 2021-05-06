@@ -49,7 +49,7 @@ class Student(db.Model):
     __tablename__ = 'students'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(256), nullable=True)
+    name = db.Column(db.String(256), nullable=False)
 
     master_id = db.Column(db.Integer, db.ForeignKey(
         "profiles.id"), nullable=True)
@@ -87,15 +87,11 @@ class Post(db.Model):
     __tablename__ = 'posts'
 
     id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(256), nullable=True)
+    student_id = db.Column(db.Integer, db.ForeignKey(
+        "students.id"), nullable=True)
+    student = db.relationship("Student", foreign_keys=[student_id])
 
-    group_id = db.Column(db.Integer, db.ForeignKey(
-        "groups.id"), nullable=True)
-    group = db.relationship("Group", foreign_keys=[group_id])
-
-    date = db.Column(db.Date, nullable=False)
-    comment = db.Column(db.String(256), nullable=False)
-
-    def __init__(self, date, comment, group_id=None):
-        self.date = date
-        self.comment = comment
-        self.group_id = group_id
+    datetime = db.Column(db.DateTime, nullable=False)
+    comment = db.Column(db.String(256), nullable=True)
+    attended = db.Column(db.Boolean, nullable=False)

@@ -1,10 +1,12 @@
 from calendar import monthrange
 from json import dumps
+from re import match
+from datetime import datetime
 
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import current_user
 
-from app.database import db, Profile, Group, Teacher, Student
+from app.database import db, Profile, Group, Teacher, Student, Post
 
 dashboard = Blueprint('dashboard', __name__,
                       template_folder='templates')
@@ -156,9 +158,41 @@ def verifying(login):
 
 @dashboard.route('/add', methods=['GET'])
 def add():
+    students = Student.query.filter_by(master_id=current_user.id).all()
+
     context = dict(
         title='Добавить новую запись',
         header='Новая запись',
-        data=dumps([])
+        students=students
     )
+    
     return render_template('dashboard/add.html', **context)
+
+# Убогий говнокод, но зато работает :)
+@dashboard.route('/post/save', methods=['POST'])
+def post_save():
+    form = dict(request.form)
+    name = form['post-name']
+    posts_dict = {}
+    del form['post-name']
+
+    for key in form:
+        data = match(r'student\-(\d+)\-(.+)', str(key))
+        post = []
+        post.append(datetime.now())
+        post.append(bool(request.form[f'student-{data.group(1)}-attended']))
+        post.append(request.form[f'student-{data.group(1)}-comment'])
+        posts_dict[f'{data.group(1)}'] = post
+
+
+    for student in posts_dict:
+        post = Post()
+        post.name = name
+        post.student_id = student
+        post.datetime = posts_dict[student][0]
+        post.attended = posts_dict[student][1]
+        post.comment = posts_dict[student][2]
+        db.session.add(post)
+
+    db.session.commit()
+    return f'{posts_dict}'
