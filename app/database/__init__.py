@@ -1,2 +1,2 @@
-from .sqlalchemy import db
 from .model import *
+from .sqlalchemy import db

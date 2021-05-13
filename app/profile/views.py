@@ -1,9 +1,9 @@
 from flask import Blueprint, render_template, url_for, redirect, flash
 from flask_login import login_user, login_required, logout_user, current_user as user
 
+from app.database import db, Profile
 from .forms import LoginForm, RegisterForm
 from .login_manager import UserLogin
-from app.database import db, Profile
 
 profile = Blueprint('profile', __name__, template_folder='templates', url_prefix='/auth')
 
@@ -53,12 +53,11 @@ def register():
         password = form.password.data
 
         if db.session.query(
-            Profile.query.filter_by(login=login).exists()
+                Profile.query.filter_by(login=login).exists()
         ).scalar():
             error = f"Аккаунт {login} уже зарегистрирован в системе."
 
         if error is None:
-
             db.session.add(Profile(
                 name=name,
                 login=login,

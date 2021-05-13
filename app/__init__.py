@@ -1,8 +1,9 @@
-
 from flask import Flask
-from .database import db
+
 from .cli import cli
+from .database import db
 from .profile import login_manager
+
 
 def create_app() -> Flask:
     app = Flask(__name__)

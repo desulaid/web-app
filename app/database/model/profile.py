@@ -16,7 +16,8 @@ class Profile(db.Model):
     group = db.Column(db.Integer, db.ForeignKey("groups.id"), nullable=True)
     teacher = db.Column(db.Integer, db.ForeignKey("teachers.id"), nullable=True)
 
-    def __init__(self, login: str, password: str, name: str, verify: bool, role_id: int = None, group_id: int = None, teacher_id: int = None):
+    def __init__(self, login: str, password: str, name: str, verify: bool, role_id: int = None, group_id: int = None,
+                 teacher_id: int = None):
         self.login = login
         self.password = password
         self.name = name

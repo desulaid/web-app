@@ -1,17 +1,3 @@
 /.venv/
 /.idea/
-# Настройки приложения
-/.flaskenv
-# Надоело чистить это говно
-app/profile/__pycache__/view.cpython-39.pyc
-app/profile/__pycache__/forms.cpython-39.pyc
-app/profile/__pycache__/login_manager.cpython-39.pyc
-app/profile/__pycache__/__init__.cpython-39.pyc
-app/database/__pycache__/sqlalchemy.cpython-39.pyc
-app/database/__pycache__/models.cpython-39.pyc
-app/database/__pycache__/__init__.cpython-39.pyc
-app/dashboard/__pycache__/views.cpython-39.pyc
-app/dashboard/__pycache__/__init__.cpython-39.pyc
-app/__pycache__/__init__.cpython-39.pyc
-__pycache__/settings.cpython-39.pyc
-__pycache__/runserver.cpython-39.pyc
+/app/database/app.sqlite

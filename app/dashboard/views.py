@@ -1,20 +1,19 @@
-from app.database.model import student
 from flask import Blueprint
-
 from flask import render_template, request, flash, redirect, url_for, abort
 from flask_login import login_required, current_user as user
+
 from app.database import db, Group, Teacher, Profile, Student, Post, Task
 
-dashboard = Blueprint ('dashboard', __name__, template_folder='templates', url_prefix='/dashboard')
+dashboard = Blueprint('dashboard', __name__, template_folder='templates', url_prefix='/dashboard')
 
 
-@dashboard.route ('/settings', methods=['GET'])
+@dashboard.route('/settings', methods=['GET'])
 @login_required
 def settings():
     groups = Group.query.all()
     teachers = Teacher.query.all()
 
-    context = dict (
+    context = dict(
         title='Настройки профиля',
         header='Настройки',
         user=user,
@@ -22,10 +21,10 @@ def settings():
         teachers=teachers
     )
 
-    return render_template ('dashboard/settings.html', **context)
+    return render_template('dashboard/settings.html', **context)
 
 
-@dashboard.route ('/save/settings/profile/<string:user_login>', methods=['POST'])
+@dashboard.route('/save/settings/profile/<string:user_login>', methods=['POST'])
 @login_required
 def save_profile_settings(user_login: str):
     profile = Profile.query.filter_by(login=user_login).first()
@@ -37,8 +36,8 @@ def save_profile_settings(user_login: str):
     password_confirm = request.form['password-confirm']
 
     if db.session.query(
-        Profile.query.filter_by(login=login).exists().where(profile.login != login)
-    ).scalar():        
+            Profile.query.filter_by(login=login).exists().where(profile.login != login)
+    ).scalar():
         error = 'Логин уже занят'
 
     elif password != password_confirm:
@@ -60,7 +59,7 @@ def save_profile_settings(user_login: str):
     return redirect(url_for('.settings'))
 
 
-@dashboard.route ('/save/settings/professional/<string:user_login>', methods=['POST'])
+@dashboard.route('/save/settings/professional/<string:user_login>', methods=['POST'])
 @login_required
 def save_proff_settings(user_login: str):
     profile = Profile.query.filter_by(login=user_login).first()
@@ -71,8 +70,8 @@ def save_proff_settings(user_login: str):
     group_name = Group.query.get(group_id)
 
     if db.session.query(
-        Profile.query.filter_by(group=group_id,
-                                teacher=teacher_id).exists()
+            Profile.query.filter_by(group=group_id,
+                                    teacher=teacher_id).exists()
     ).scalar():
         error = f'Староста группы {group_name.name} уже назначен'
 
@@ -145,36 +144,35 @@ def group():
 @login_required
 def group_save(id: int):
     students = Student.query.filter_by(profile=id).all()
-    
+
     if not students:
         for key in request.form:
-            db.session.add(Student(name=request.form[key], 
+            db.session.add(Student(name=request.form[key],
                                    profile_id=id))
     else:
         form = [request.form[i] for i in request.form]
         table = [i.name for i in students]
         over_rows = list(set(form) ^ set(table))
-        
+
         for item in over_rows:
             student = Student.query.filter_by(profile=id,
                                               name=item).first()
             if not student:
-                db.session.add(Student(name=item, 
+                db.session.add(Student(name=item,
                                        profile_id=id))
                 flash(f'Добавлен студент {item}', 'success')
             else:
                 flash(f'Удален студент {item}', 'danger')
-                
+
                 posts = db.session.query(Post).filter_by(profile=id).all()
                 for post in posts:
                     tasks = post.tasks.filter_by(student=id).where(student.id == student.id).all()
                     for task in tasks:
                         db.session.delete(task)
-                
+
                 flash(f'Все связанные со студентом {item} записи удалены', 'danger')
 
                 db.session.delete(student)
-
 
     db.session.commit()
 
@@ -194,8 +192,8 @@ def create_post():
     )
 
     return render_template('dashboard/create_post.html', **context)
-    
-    
+
+
 @dashboard.route('/create/save/<int:id>', methods=['POST'])
 @login_required
 def save_post(id: int):
@@ -205,26 +203,23 @@ def save_post(id: int):
     form = dict(request.form)
     students = {}
     name = form['post-name']
-    
+
     del form['post-name']
-    
+
     if not name:
         flash('Название записи обязатнльео к заполнению', 'warning')
     else:
         for key in form:
             data = match(r'student\-(\d+)\-(.+)', key)
-            item = []
-            item.append(bool(form[f'student-{data.group(1)}-attended']))
-            item.append(form[f'student-{data.group(1)}-comment'])
+            item = [bool(form[f'student-{data.group(1)}-attended']), form[f'student-{data.group(1)}-comment']]
             students[f'{data.group(1)}'] = item
-
 
         post = Post(profile=id)
         for i in students:
-            post.tasks.append(Task(title=name, 
+            post.tasks.append(Task(title=name,
                                    attended=students[i][0],
-                                   comment=students[i][1],                                
-                                   datetime=datetime.now(), 
+                                   comment=students[i][1],
+                                   datetime=datetime.now(),
                                    student_id=i))
             db.session.add(post)
 

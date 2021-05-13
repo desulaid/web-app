@@ -29,8 +29,8 @@
         {{ menu_item('.group', 'Моя группа') }}
         {{ menu_item('.create_post', 'Создать') }}
         {{ menu_item('.settings', 'Настройки') }}
-        {% if user.role == 2  %}
-            {{ menu_item('.verify', 'Верификация') }}
+        {% if user.role == 2 %}
+        {{ menu_item('.verify', 'Верификация') }}
         {% endif %}
     </nav>
 </div>

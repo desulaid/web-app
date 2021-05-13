@@ -13,7 +13,7 @@
     <div class="row mt-2 border-bottom">
         <div class="col-md mb-2">
             <div class="table-responsive">
-                <form method="post" action="{{ url_for('.save_post', id=user.id) }}">
+                <form action="{{ url_for('.save_post', id=user.id) }}" method="post">
                     <small class="text-muted">Укажите название занятия</small>
                     <div class="input-group input-group-sm mb-3 mt-2">
                         <input class="form-control" id="post-name-id" name="post-name" title="Название занятия"
@@ -29,20 +29,22 @@
                         </tr>
                         </thead>
                         <tbody>
-                            {% for i in students%}
-                            <tr>
-                                <td scope="row">{{ i.name }}</td>
-                                <td>
-                                    <select class="form-select form-select-sm" name="student-{{ i.id }}-attended">
-                                        <option value="yes">Да</option>
-                                        <option value="">Нет</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <input class="form-control form-control-sm" placeholder="По желанию" type="text" name="student-{{ i.id }}-comment">
-                                </td>
-                            </tr>
-                            {% endfor %}
+                        {% for i in students%}
+                        <tr>
+                            <td scope="row">{{ i.name }}</td>
+                            <td>
+                                <select class="form-select form-select-sm" name="student-{{ i.id }}-attended">
+                                    <option value="yes">Да</option>
+                                    <option value="">Нет</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input class="form-control form-control-sm" name="student-{{ i.id }}-comment"
+                                       placeholder="По желанию"
+                                       type="text">
+                            </td>
+                        </tr>
+                        {% endfor %}
                         </tbody>
                     </table>
                     <input id="hidden-submit" type="submit" value="submit"/>
@@ -61,5 +63,7 @@
     .sumbit-form {
         cursor: pointer;
     }
+
+
 </style>
 {% endblock %}

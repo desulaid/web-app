@@ -1,5 +1,5 @@
 {% macro menu_item (url, name) %}
-    <a class="nav-link {{ 'active' if request.path == url_for(url) }}" href="{{ url_for(url) }}">{{ name }}</a>
+<a class="nav-link {{ 'active' if request.path == url_for(url) }}" href="{{ url_for(url) }}">{{ name }}</a>
 {% endmacro %}
 
 {% macro header_name(name) %}
