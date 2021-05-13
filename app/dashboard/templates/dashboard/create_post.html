@@ -1,21 +1,19 @@
-{% extends 'dashboard/layout.html' %}
+{% extends 'dashboard/base.html' %}
 {% block title %}{{ title }}{% endblock %}
 {% block content %}
 <div class="container mt-4">
     <div class="row align-items-center">
-        <div class="col">
-            <h3>{{ header }} / <a class="text-decoration-none" href="{{ url_for('.archive_posts') }}">Архив</a></h3>
-        </div>
-        <div class="col">
-            <div class="d-flex justify-content-end">
-                <label class="nav-link text-dark sumbit-form" for="hidden-submit">Сохранить</label>
-            </div>
+        {{ header_name(header) }}
+    </div>
+    <div class="col">
+        <div class="d-flex justify-content-end">
+            <label class="nav-link text-dark sumbit-form" for="hidden-submit">Сохранить</label>
         </div>
     </div>
     <div class="row mt-2 border-bottom">
         <div class="col-md mb-2">
             <div class="table-responsive">
-                <form method="post" action="{{ url_for('.post_save') }}">
+                <form method="post" action="{{ url_for('.save_post', id=user.id) }}">
                     <small class="text-muted">Укажите название занятия</small>
                     <div class="input-group input-group-sm mb-3 mt-2">
                         <input class="form-control" id="post-name-id" name="post-name" title="Название занятия"
@@ -63,7 +61,5 @@
     .sumbit-form {
         cursor: pointer;
     }
-
-
 </style>
 {% endblock %}

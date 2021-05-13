@@ -1,0 +1,57 @@
+{% from 'dashboard/macroses.html' import menu_item, header_name with context %}
+
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link href="{{ url_for('static', filename='css/app.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <title>{% block title %}{% endblock %} &#183; Электронный журнал</title>
+</head>
+
+<body>
+
+<nav aria-label="Main navigation" class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand">
+            Журнал посещаемости
+        </a>
+        <div class="d-flex">
+            <a class="nav-link text-dark" href="{{ url_for('profile.logout') }}">Выйти</a>
+        </div>
+    </div>
+</nav>
+
+<div class="nav-scroller bg-body border-top border-bottom">
+    <nav aria-label="Secondary navigation" class="nav container nav-underline">
+        {{ menu_item('.group', 'Моя группа') }}
+        {{ menu_item('.create_post', 'Создать') }}
+        {{ menu_item('.settings', 'Настройки') }}
+        {% if user.role == 2  %}
+            {{ menu_item('.verify', 'Верификация') }}
+        {% endif %}
+    </nav>
+</div>
+
+
+<div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }} alert-dismissible fade show mt-3" role="alert">
+        {{ message }}
+        <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+</div>
+
+{% block content %}{% endblock %}
+
+</body>
+<script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+
+</html>

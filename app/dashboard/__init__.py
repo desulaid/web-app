@@ -1,1 +1,1 @@
-from app.dashboard.views import dashboard
+from .views import dashboard

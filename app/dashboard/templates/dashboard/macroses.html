@@ -1,0 +1,11 @@
+{% macro menu_item (url, name) %}
+    <a class="nav-link {{ 'active' if request.path == url_for(url) }}" href="{{ url_for(url) }}">{{ name }}</a>
+{% endmacro %}
+
+{% macro header_name(name) %}
+<div class="row align-items-center">
+    <div class="col">
+        <h3>{{ name }}</h3>
+    </div>
+</div>
+{% endmacro %}

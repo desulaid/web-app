@@ -1,12 +1,13 @@
 from flask_login import LoginManager, UserMixin
 
-from app.database.models import Profile
+from app.database import Profile
 
 login_manager = LoginManager()
 
 login_manager.login_view = 'profile.login'
 login_manager.login_message = 'Для начала авторизуйтесь'
 login_manager.login_message_category = 'warning'
+
 
 class UserLogin(Profile, UserMixin):
     def is_authenticated(self):

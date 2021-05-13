@@ -1,95 +1,34 @@
-from json import dumps
-from re import match
-from datetime import datetime
+from app.database.model import student
+from flask import Blueprint
 
-from flask import Blueprint, render_template, redirect, url_for, flash, request, abort
-from flask_login import current_user, login_required
+from flask import render_template, request, flash, redirect, url_for, abort
+from flask_login import login_required, current_user as user
+from app.database import db, Group, Teacher, Profile, Student, Post, Task
 
-from app.database import db, Profile, Group, Teacher, Student, Post, Archive
-
-dashboard = Blueprint('dashboard', __name__,
-                      template_folder='templates')
+dashboard = Blueprint ('dashboard', __name__, template_folder='templates', url_prefix='/dashboard')
 
 
-@dashboard.route('/group', methods=['GET'])
-@login_required
-def group():
-    students = Student.query.filter_by(master_id=current_user.id).all()
-
-    context = dict(
-        title='Студенты моей группы',
-        header='Моя группа',
-        data=dumps([i.name for i in students]),
-        current_user=current_user,
-    )
-
-    return render_template('dashboard/group.html', **context)
-
-
-@dashboard.route('/group/<id>', methods=['POST'])
-@login_required
-def group_save(id):
-    Student.query.filter_by(master_id=id).delete()
-
-    for key in request.form:
-        if request.form[key]:
-            db.session.add(
-                Student(name=request.form[key], master_id=current_user.id))
-
-    db.session.commit()
-
-    flash('Список студентов обновлен', 'success')
-
-    return redirect(url_for('.group'))
-
-
-@dashboard.route('/settings', methods=['GET'])
+@dashboard.route ('/settings', methods=['GET'])
 @login_required
 def settings():
     groups = Group.query.all()
     teachers = Teacher.query.all()
 
-    context = dict(
+    context = dict (
         title='Настройки профиля',
         header='Настройки',
-        current_user=current_user,
+        user=user,
         groups=groups,
         teachers=teachers
     )
 
-    return render_template('dashboard/settings.html', **context)
+    return render_template ('dashboard/settings.html', **context)
 
 
-@dashboard.route('/profile/update/<login>/prof', methods=['POST'])
+@dashboard.route ('/save/settings/profile/<string:user_login>', methods=['POST'])
 @login_required
-def update_profile_prof(login):
-    profile = Profile.query.filter_by(login=login).first()
-
-    error = None
-    group_id = request.form['group-id']
-    group_teacher_id = request.form['group-teacher']
-    group_name = Group.query.get(group_id)
-
-    if db.session.query(
-            Profile.query.filter_by(group_id=group_id,
-                                    teacher_id=group_teacher_id).exists()
-    ).scalar():
-        error = f'Староста группы {group_name.name} уже назначен'
-
-    if error is None:
-        profile.group_id = group_id
-        profile.teacher_id = group_teacher_id
-        db.session.commit()
-    else:
-        flash(error, 'warning')
-
-    return redirect(url_for('.settings'))
-
-
-@dashboard.route('/profile/update/<login>/main', methods=['POST'])
-@login_required
-def update_profile_main(login):
-    profile = Profile.query.filter_by(login=login).first()
+def save_profile_settings(user_login: str):
+    profile = Profile.query.filter_by(login=user_login).first()
 
     error = None
     name = request.form['name']
@@ -98,16 +37,48 @@ def update_profile_main(login):
     password_confirm = request.form['password-confirm']
 
     if db.session.query(
-            Profile.query.filter_by(login=login).exists()
-    ).scalar():
+        Profile.query.filter_by(login=login).exists().where(profile.login != login)
+    ).scalar():        
         error = 'Логин уже занят'
+
     elif password != password_confirm:
         error = 'Пароли не совпадают'
+    elif not len(password):
+        error = 'Пароль не может быть пустым'
 
     if error is None:
         profile.name = name
         profile.login = login
         profile.password = password
+
+        db.session.commit()
+
+        flash('Настройки обновлены', 'success')
+    else:
+        flash(error, 'warning')
+
+    return redirect(url_for('.settings'))
+
+
+@dashboard.route ('/save/settings/professional/<string:user_login>', methods=['POST'])
+@login_required
+def save_proff_settings(user_login: str):
+    profile = Profile.query.filter_by(login=user_login).first()
+
+    error = None
+    group_id = request.form['group-id']
+    teacher_id = request.form['group-teacher']
+    group_name = Group.query.get(group_id)
+
+    if db.session.query(
+        Profile.query.filter_by(group=group_id,
+                                teacher=teacher_id).exists()
+    ).scalar():
+        error = f'Староста группы {group_name.name} уже назначен'
+
+    if error is None:
+        profile.group = group_id
+        profile.teacher = teacher_id
         db.session.commit()
     else:
         flash(error, 'warning')
@@ -118,7 +89,7 @@ def update_profile_main(login):
 @dashboard.route('/verify', methods=['GET'])
 @login_required
 def verify():
-    if current_user.id != 1:
+    if user.id != 1:
         abort(404)
 
     profiles = Profile.query.filter_by(verify=False).all()
@@ -126,15 +97,15 @@ def verify():
     context = dict(
         title='Подтверждение профилей',
         header='Верфикация',
+        user=user,
         profiles=profiles
     )
 
     return render_template('dashboard/verify.html', **context)
 
 
-@dashboard.route('/verifying/<login>', methods=['POST'])
-@login_required
-def verifying(login):
+@dashboard.route('/verifying/<string:login>', methods=['POST'])
+def verifying(login: str):
     status = True if request.form['status'] == 'yes' else False
 
     profile = Profile.query.filter_by(login=login).first()
@@ -153,73 +124,109 @@ def verifying(login):
     return redirect(url_for('.verify'))
 
 
-@dashboard.route('/post/create', methods=['GET'])
+@dashboard.route('/group', methods=['GET'])
+@login_required
+def group():
+    from json import dumps
+
+    students = Student.query.filter_by(profile=user.id).all()
+
+    context = dict(
+        title='Студенты моей группы',
+        header='Моя группа',
+        data=dumps([i.name for i in students]),
+        user=user,
+    )
+
+    return render_template('dashboard/group.html', **context)
+
+
+@dashboard.route('/group/save/<int:id>', methods=['POST'])
+@login_required
+def group_save(id: int):
+    students = Student.query.filter_by(profile=id).all()
+    
+    if not students:
+        for key in request.form:
+            db.session.add(Student(name=request.form[key], 
+                                   profile_id=id))
+    else:
+        form = [request.form[i] for i in request.form]
+        table = [i.name for i in students]
+        over_rows = list(set(form) ^ set(table))
+        
+        for item in over_rows:
+            student = Student.query.filter_by(profile=id,
+                                              name=item).first()
+            if not student:
+                db.session.add(Student(name=item, 
+                                       profile_id=id))
+                flash(f'Добавлен студент {item}', 'success')
+            else:
+                flash(f'Удален студент {item}', 'danger')
+                
+                posts = db.session.query(Post).filter_by(profile=id).all()
+                for post in posts:
+                    tasks = post.tasks.filter_by(student=id).where(student.id == student.id).all()
+                    for task in tasks:
+                        db.session.delete(task)
+                
+                flash(f'Все связанные со студентом {item} записи удалены', 'danger')
+
+                db.session.delete(student)
+
+
+    db.session.commit()
+
+    return redirect(url_for('.group'))
+
+
+@dashboard.route('/create', methods=['GET'])
 @login_required
 def create_post():
-    students = Student.query.filter_by(master_id=current_user.id).all()
+    students = Student.query.filter_by(profile=user.id).all()
 
     context = dict(
         title='Добавить новую запись',
         header='Новая запись',
-        students=students
+        students=students,
+        user=user
     )
 
     return render_template('dashboard/create_post.html', **context)
-
-@dashboard.route('/post/archive', methods=['GET'])
+    
+    
+@dashboard.route('/create/save/<int:id>', methods=['POST'])
 @login_required
-def archive_posts():
+def save_post(id: int):
+    from re import match
+    from datetime import datetime
 
-    posts = []
-    for i in Post.query.filter_by(author_id=current_user.id).all():
-        posts.append({
-            'id': i.id,
-            'name': i.name,
-            'date': i.datetime.strftime("%d-%m-%Y, %H:%M"),
-            'archive': 
-                [i for i in Archive.query.filter_by(post_id=i.id).all()]
-            
-        })
-
-    context = dict(
-        title='Список записей',
-        header='Записи',
-        posts=posts
-    )
-
-    return render_template('dashboard/archive.html', **context)
-
-# Убогий говнокод, но зато работает :)
-@dashboard.route('/post/save', methods=['POST'])
-@login_required
-def post_save():
     form = dict(request.form)
+    students = {}
     name = form['post-name']
+    
     del form['post-name']
     
     if not name:
         flash('Название записи обязатнльео к заполнению', 'warning')
     else:
-        post= Post(name=name, datetime=datetime.now(), author_id=current_user.id)
-        db.session.add(post)
-        db.session.commit()
-
-        posts_dict = {}
-
         for key in form:
-            data = match(r'student\-(\d+)\-(.+)', str(key))
+            data = match(r'student\-(\d+)\-(.+)', key)
             item = []
-            item.append(bool(request.form[f'student-{data.group(1)}-attended']))
-            item.append(request.form[f'student-{data.group(1)}-comment'])
-            posts_dict[f'{data.group(1)}'] = item
+            item.append(bool(form[f'student-{data.group(1)}-attended']))
+            item.append(form[f'student-{data.group(1)}-comment'])
+            students[f'{data.group(1)}'] = item
 
-        for student in posts_dict:
-            db.session.add(Archive(
-                student_id=student,
-                attended=posts_dict[student][0],
-                comment=posts_dict[student][1],
-                post_id=post.id
-            ))
+
+        post = Post(profile=id)
+        for i in students:
+            post.tasks.append(Task(title=name, 
+                                   attended=students[i][0],
+                                   comment=students[i][1],                                
+                                   datetime=datetime.now(), 
+                                   student_id=i))
+            db.session.add(post)
 
         db.session.commit()
 

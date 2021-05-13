@@ -1,27 +1,23 @@
-{% extends 'dashboard/layout.html' %}
+{% extends 'dashboard/base.html' %}
 {% block title %}{{ title }}{% endblock %}
 {% block content %}
 <div class="container mt-4">
-    <div class="row align-items-center">
-        <div class="col">
-            <h3>{{ header }}</h3>
-        </div>
-    </div>
+    {{ header_name(header) }}
     <div class="row mt-2 border-bottom">
         <div class="col-md">
             <p>Аккаунт</p>
         </div>
         <div class="col-md mb-2">
-            <form action="{{ url_for('.update_profile_main', login=current_user.login) }}" method="post">
+            <form action="{{ url_for('.save_profile_settings', user_login=user.login) }}" method="post">
                 <div class="mb-3">
                     <label class="form-label" for="user-name">Имя пользователя</label>
                     <input class="form-control form-control-sm" id="user-name" name="name" type="text"
-                           value="{{ current_user.name }}">
+                           value="{{ user.name }}">
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="user-login">Логин</label>
                     <input class="form-control form-control-sm" id="user-login" name="login"
-                           type="text" value="{{ current_user.login }}">
+                           type="text" value="{{ user.login }}">
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="user-password">Новый пароль</label>
@@ -42,12 +38,12 @@
                 экспортируемых данных для отчетов.</small>
         </div>
         <div class="col-md mb-2">
-            <form action="{{ url_for('.update_profile_prof', login=current_user.login) }}" method="post">
+            <form action="{{ url_for('.save_proff_settings', user_login=user.login) }}" method="post">
                 <div class="mb-3">
                     <label class="form-label" for="group-id">Название группы</label>
                     <select class="form-select form-select-sm" id="group-id" name="group-id">
                         {% for i in groups %}
-                        {% if current_user.group_id == i.id %}
+                        {% if user.group == i.id %}
                         <option selected value="{{ i.id }}">{{ i.name }}</option>
                         {% else %}
                         <option value="{{ i.id }}">{{ i.name }}</option>
@@ -60,7 +56,7 @@
                     <label class="form-label" for="group-teacher">Классный руководитель</label>
                     <select class="form-select form-select-sm" id="group-teacher" name="group-teacher">
                         {% for i in teachers %}
-                        {% if current_user.teacher_id == i.id %}
+                        {% if user.teacher == i.id %}
                         <option selected value="{{ i.id }}">{{ i.name }}</option>
                         {% else %}
                         <option value="{{ i.id }}">{{ i.name }}</option>
@@ -75,5 +71,4 @@
         </div>
     </div>
 </div>
-
 {% endblock %}
