@@ -13,9 +13,9 @@
 
 <body>
 
-<nav aria-label="Main navigation" class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-        <a class="navbar-brand">
+        <a class="navbar-brand" href="{{ url_for('info.index') }}">
             Журнал посещаемости
         </a>
         <div class="d-flex">
@@ -24,7 +24,7 @@
     </div>
 </nav>
 
-<div class="nav-scroller bg-body border-top border-bottom">
+<div class="nav-scroller border-top border-bottom">
     <nav aria-label="Secondary navigation" class="nav container nav-underline">
         {{ menu_item('.group', 'Моя группа') }}
         {{ menu_item('.create_post', 'Создать') }}
