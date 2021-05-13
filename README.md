@@ -1,5 +1,6 @@
 # web ~~app~~
 
+#### Инструкаж
 ```shell
 # Скачай
 $ git clone https://github.com/desulaid/web-app
@@ -28,5 +29,13 @@ $ (.venv) flask database admin [пароль]
 $ (.venv) flask run
 ```
 
-### Так, ссылочки
+#### .env переменные
+```bash
+FLASK_APP=app:create_app()
+FLASK_ENV=development
+SECRET_KEY=рандомная строка
+ALCHEMY_DATABASE_URL=postgresql://логин:пароль@хост/бд
+```
+
+#### Так, ссылочки
 [Connection URI Format](https://flask-sqlalchemy.palletsprojects.com/en/2.x/config/#connection-uri-format)
