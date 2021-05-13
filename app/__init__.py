@@ -19,6 +19,8 @@ def create_app() -> Flask:
 def register_blueprints(app: Flask) -> None:
     from .profile import profile
     from .dashboard import dashboard
+    from .info import info
 
     app.register_blueprint(profile)
     app.register_blueprint(dashboard)
+    app.register_blueprint(info)
