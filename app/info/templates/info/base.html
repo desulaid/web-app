@@ -1,0 +1,48 @@
+{% from 'dashboard/macroses.html' import menu_item, header_name with context %}
+
+<!DOCTYPE html>
+
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link href="{{ url_for('static', filename='css/app.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <title>{% block title %}{% endblock %} &#183; Электронный журнал</title>
+</head>
+
+<body>
+<div class="container py-4">
+    <header class="border-bottom">
+        <a href="{{ url_for('.index') }}" class="d-flex align-items-center text-dark text-decoration-none mb-1">
+            <p class="display-6 fw-bold">{{ header }}</p>
+        </a>
+    </header>
+
+    {% if user.is_authenticated%}
+    <div class="alert alert-info mt-4 m-0" role="alert">
+        <b>{{ user.name }}</b>, вы можете <a href="{{ url_for('dashboard.group') }}"><b>перейти</b></a> в панель управления.
+    </div>
+    {% endif %}
+</div>
+
+<div class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }} alert-dismissible fade show mt-3" role="alert">
+        {{ message }}
+        <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+</div>
+
+{% block content %}{% endblock %}
+
+</body>
+<script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+
+</html>

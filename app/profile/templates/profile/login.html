@@ -3,7 +3,7 @@
 {% block content %}
 <div class="form-auth">
     <div class="container  text-center">
-        <h1 class="h3 mb-3 fw-norma">{{ header }}</h1>
+        <p class="h3 mb-4 display-6 fw-bold">{{ header }}</p>
         <form class="row" method="post">
             {{ form.csrf_token }}
             {{ form.login(class='form-control') }}

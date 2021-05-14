@@ -1,0 +1,28 @@
+{% extends 'info/base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="container">
+    asd
+</div>
+
+{% if not user.is_authenticated %}
+<div class="toast-container position-absolute bottom-0 end-0 m-2">
+    <div id="bottomMessage" class="toast align-items-center show text-white bg-primary" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                Если <b>вы староста</b>, <a class="text-light" href="{{ url_for('profile.login') }}">авторизуйся</a> на сайте, чтобы иметь доступ к панели.
+            </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+<script>
+var bottomMessage = document.getElementById('bottomMessage')
+
+bottomMessage.onclick = () => {
+    bottomMessage.setAttribute('hidden', true)
+}
+</script>
+{% endif %}
+{% endblock %}
