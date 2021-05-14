@@ -208,6 +208,8 @@ def save_post(id: int):
 
     if not name:
         flash('Название записи обязатнльео к заполнению', 'warning')
+    elif not form:
+        flash('Вы не можете создать запись буз студентов', 'warning')
     else:
         for key in form:
             data = match(r'student\-(\d+)\-(.+)', key)

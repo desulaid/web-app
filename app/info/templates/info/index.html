@@ -25,14 +25,25 @@
         <div class="d-flex">
             <div class="toast-body">
                 {% if not user.is_authenticated %}
-                Если <b>вы староста</b>, <a class="text-light" href="{{ url_for('profile.login') }}"><b>авторизуйся</b></a>
+                Если <b>вы староста</b>, <a class="text-light text-decoration-none" href="{{ url_for('profile.login') }}"><b>авторизуйся</b></a>
                 на
                 сайте, чтобы иметь доступ к панели.
                 {% else %}
-                <b>{{ user.name }}</b>, желаете <a class="text-light"
+                <b>{{ user.name }}</b>, желаете <a class="text-light text-decoration-none"
                                                    href="{{ url_for('dashboard.group') }}"><b>перейти</b></a> в панель
                 управления?
                 {% endif %}
+            </div>
+            <button aria-label="Close" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    type="button"></button>
+        </div>
+    </div>
+
+    <div aria-atomic="true" aria-live="assertive" class="toast align-items-center show text-white bg-success"
+         id="bottomInfoMessage" role="alert">
+        <div class="d-flex">
+            <div class="toast-body">
+                Есть вопросы? <a class="text-light text-decoration-none" href="#"><b>Здесь</b></a> вы можете получить справку!
             </div>
             <button aria-label="Close" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
                     type="button"></button>
@@ -43,11 +54,14 @@
 
 <script>
 var bottomMessage = document.getElementById('bottomMessage')
+var bottomInfoMessage = document.getElementById('bottomInfoMessage')
 
 bottomMessage.onclick = () => {
     bottomMessage.setAttribute('hidden', true)
 }
 
-
+bottomInfoMessage.onclick = () => {
+    bottomInfoMessage.setAttribute('hidden', true)
+}
 </script>
 {% endblock %}

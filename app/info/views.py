@@ -27,3 +27,13 @@ def index():
 @info.route('/info/<string:name>/<int:id>', methods=['GET'])
 def student_info(name: str):
     return f'{request.form}'
+
+
+@info.route('/faq', methods=['GET'])
+def faq():
+    context = dict(
+        title='Статистика',
+        header='Посещаемые занятия!',
+    )
+
+    return render_template('info/faq.html', **context)
