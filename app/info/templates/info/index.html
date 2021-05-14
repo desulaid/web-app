@@ -12,7 +12,7 @@
                     <option value="{{ group.id }}">{{ group.name }}</option>
                     {% endfor %}
                 </select>
-                <input class="form-control" name="date" type="date">
+                <input class="form-control" name="date" type="month">
                 <button class="btn btn-outline-primary" type="submit">Поиск</button>
             </div>
         </form>
@@ -47,6 +47,7 @@ var bottomMessage = document.getElementById('bottomMessage')
 bottomMessage.onclick = () => {
     bottomMessage.setAttribute('hidden', true)
 }
+
 
 </script>
 {% endblock %}
