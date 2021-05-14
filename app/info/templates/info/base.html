@@ -13,19 +13,6 @@
 </head>
 
 <body>
-<div class="container py-4">
-    <header class="border-bottom">
-        <a href="{{ url_for('.index') }}" class="d-flex align-items-center text-dark text-decoration-none mb-1">
-            <p class="display-6 fw-bold">{{ header }}</p>
-        </a>
-    </header>
-
-    {% if user.is_authenticated%}
-    <div class="alert alert-info mt-4 m-0" role="alert">
-        <b>{{ user.name }}</b>, вы можете <a href="{{ url_for('dashboard.group') }}"><b>перейти</b></a> в панель управления.
-    </div>
-    {% endif %}
-</div>
 
 <div class="container">
     {% with messages = get_flashed_messages(with_categories=true) %}

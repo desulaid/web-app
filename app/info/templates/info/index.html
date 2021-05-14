@@ -1,21 +1,45 @@
 {% extends 'info/base.html' %}
 {% block title %}{{ title }}{% endblock %}
 {% block content %}
-<div class="container">
-    asd
+<div class="h-100 d-flex justify-content-center align-items-center p-4">
+    <div class="text-center">
+        <h1 class="display-6 fw-bold">{{ header }}</h1>
+        <p class="lead mb-4">Весь учет посещаемости.</p>
+        <form method="post">
+            <div class="input-group input-group-sm mb-3">
+                <select class="form-select" name="group">
+                    {% for group in groups %}
+                    <option value="{{ group.id }}">{{ group.name }}</option>
+                    {% endfor %}
+                </select>
+                <input class="form-control" name="date" type="date">
+                <button class="btn btn-outline-primary" type="submit">Поиск</button>
+            </div>
+        </form>
+    </div>
 </div>
 
-{% if not user.is_authenticated %}
 <div class="toast-container position-absolute bottom-0 end-0 m-2">
-    <div id="bottomMessage" class="toast align-items-center show text-white bg-primary" role="alert" aria-live="assertive" aria-atomic="true">
+    <div aria-atomic="true" aria-live="assertive" class="toast align-items-center show text-white bg-primary"
+         id="bottomMessage" role="alert">
         <div class="d-flex">
             <div class="toast-body">
-                Если <b>вы староста</b>, <a class="text-light" href="{{ url_for('profile.login') }}">авторизуйся</a> на сайте, чтобы иметь доступ к панели.
+                {% if not user.is_authenticated %}
+                Если <b>вы староста</b>, <a class="text-light" href="{{ url_for('profile.login') }}"><b>авторизуйся</b></a>
+                на
+                сайте, чтобы иметь доступ к панели.
+                {% else %}
+                <b>{{ user.name }}</b>, желаете <a class="text-light"
+                                                   href="{{ url_for('dashboard.group') }}"><b>перейти</b></a> в панель
+                управления?
+                {% endif %}
             </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            <button aria-label="Close" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    type="button"></button>
         </div>
     </div>
 </div>
+
 
 <script>
 var bottomMessage = document.getElementById('bottomMessage')
@@ -23,6 +47,6 @@ var bottomMessage = document.getElementById('bottomMessage')
 bottomMessage.onclick = () => {
     bottomMessage.setAttribute('hidden', true)
 }
+
 </script>
-{% endif %}
 {% endblock %}

@@ -1,18 +1,29 @@
-from flask import Blueprint, render_template, url_for
+from flask import Blueprint, render_template, request
 from flask_login import current_user as user
 
+from app.database import Group
 
 info = Blueprint('info', __name__, template_folder='templates')
 
 
-@info.route('/info', methods=['GET'])
-@info.route('/', methods=['GET'])
+@info.route('/info', methods=['GET', 'POST'])
+@info.route('/', methods=['GET', 'POST'])
 def index():
+    if request.method == 'POST':
+        pass
+
+    groups = Group.query.all()
 
     context = dict(
         title='Статистика',
-        header='Статистика по посещаемым занятиям',
-        user=user
+        header='Посещаемые занятия!',
+        user=user,
+        groups=groups
     )
 
     return render_template('info/index.html', **context)
+
+
+@info.route('/info/<string:name>/<int:id>', methods=['GET'])
+def student_info(name: str):
+    return f'{request.form}'

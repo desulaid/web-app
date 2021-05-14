@@ -2,15 +2,16 @@
 {% block title %}{{ title }}{% endblock %}
 {% block content %}
 <div class="form-auth">
-    <div class="container">
-        <p class="h3 mb-4 display-6 fw-bold">{{ header }}</p>
-        <form class="row" method="post">
+    <div class="container text-center">
+        <a class="h3 mb-4 display-6 fw-bold text-decoration-none" href="{{ url_for('info.index') }}"
+           title="Вернуться на главную">{{ header }}</a>
+        <form class="row mt-3" method="post">
             {{ form.csrf_token }}
             {{ form.name(class='form-control') }}
             {{ form.login(class='form-control') }}
             {{ form.password(class='form-control') }}
             {{ form.confirm(class='form-control') }}
-            {{ form.submit(class='form-control btn btn-dark mt-3') }}
+            {{ form.submit(class='form-control btn btn-primary mt-3') }}
         </form>
         <p class="text-center mt-2">Есть аккаунта? <a href="{{ url_for('.login') }}">войдите</a> в него!</p>
     </div>
