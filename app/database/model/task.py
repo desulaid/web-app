@@ -11,7 +11,7 @@ class Task(db.Model):
     attended = db.Column(db.Boolean, nullable=False)
     comment = db.Column(db.String(256), nullable=True)
 
-    def __init__(self, title: str, attended: bool, comment: str, datetime: datetime, student_id: int):
+    def __init__(self, title: str, attended: bool, comment: str, datetime: datetime, student_id: int) -> object:
         self.title = title
         self.attended = attended
         self.comment = comment

@@ -1,3 +1,7 @@
+__author__ = 'desulaid'
+__version__ = '0.0.2'
+__email__ = 'desulaid@gmail.com'
+
 from flask import Flask
 
 from .cli import cli

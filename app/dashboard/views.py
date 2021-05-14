@@ -220,7 +220,7 @@ def save_post(id: int):
                                    attended=students[i][0],
                                    comment=students[i][1],
                                    datetime=datetime.now(),
-                                   student_id=i))
+                                   student_id=int(i)))
             db.session.add(post)
 
         db.session.commit()
