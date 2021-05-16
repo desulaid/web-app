@@ -6,49 +6,43 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <link href="{{ url_for('static', filename='css/app.css') }}" rel="stylesheet">
     <title>{% block title %}{% endblock %} &#183; Электронный журнал</title>
-    <style>
-    body {
-        display: flex;
-        align-items: center;
-        padding-top: 40px;
-        padding-bottom: 40px;
-    }
-
-
-    </style>
 </head>
 <body>
-<div class="container">
-    <div class="row">
-        <div class="m-2">
-            {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-            {% for category, message in messages %}
-            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-                {{ message }}
-                <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
-            </div>
-            {% endfor %}
-            {% endif %}
-            {% endwith %}
-
-            {% if form %}
-            {% if form.errors %}
-            {% for key in form.errors %}
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                {{ ''.join(form.errors[key]) }}
-                <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
-            </div>
-            {% endfor %}
-            {% endif %}
-            {% endif %}
+<nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="{{ url_for('info.index') }}">
+            Журнал посещаемости
+        </a>
+        <div class="d-flex">
+            <a class="nav-link text-dark" href="{{ url_for('profile.login') }}">Войти</a>
         </div>
     </div>
-    <div class="row">
-        {% block content %}
-        {% endblock %}
-    </div>
+</nav>
+<div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        {% if form %}
+        {% if form.errors %}
+        {% for key in form.errors %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{ ''.join(form.errors[key]) }}
+            <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endif %}
 </div>
+
+{% block content %} {% endblock %}
 <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
 </body>
 </html>
