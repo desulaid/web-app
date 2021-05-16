@@ -10,12 +10,9 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-light">
     <div class="container">
-        <a class="navbar-brand fw-bold" href="{{ url_for('info.index') }}">
+        <a class="navbar-brand fw-bold" href="{{ url_for('home.index') }}">
             Журнал посещаемости
         </a>
-        <div class="d-flex">
-            <a class="nav-link text-dark" href="{{ url_for('profile.login') }}">Войти</a>
-        </div>
     </div>
 </nav>
 <div class="container">
@@ -41,7 +38,6 @@
         {% endif %}
         {% endif %}
 </div>
-
 {% block content %} {% endblock %}
 <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
 </body>

@@ -3,11 +3,11 @@ from flask_login import current_user as user
 
 from app.database import Group
 
-info = Blueprint('info', __name__, template_folder='templates')
+home = Blueprint('home', __name__, template_folder='templates')
 
 
-@info.route('/info', methods=['GET', 'POST'])
-@info.route('/', methods=['GET', 'POST'])
+@home.route('/home', methods=['GET', 'POST'])
+@home.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
         pass
@@ -21,19 +21,19 @@ def index():
         groups=groups
     )
 
-    return render_template('info/index.html', **context)
+    return render_template('home/index.html', **context)
 
 
-@info.route('/info/<string:name>/<int:id>', methods=['GET'])
+@home.route('/home/<string:name>/<int:id>', methods=['GET'])
 def student_info(name: str):
     return f'{request.form}'
 
 
-@info.route('/faq', methods=['GET'])
+@home.route('/faq', methods=['GET'])
 def faq():
     context = dict(
         title='Статистика',
         header='Посещаемые занятия!',
     )
 
-    return render_template('info/faq.html', **context)
+    return render_template('home/faq.html', **context)

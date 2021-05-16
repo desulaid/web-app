@@ -2,7 +2,6 @@
 
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -10,12 +9,10 @@
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
     <title>{% block title %}{% endblock %} &#183; Электронный журнал</title>
 </head>
-
 <body>
-
 <nav class="navbar navbar-expand-lg navbar-light">
     <div class="container">
-        <a class="navbar-brand fw-bold" href="{{ url_for('info.index') }}">
+        <a class="navbar-brand fw-bold" href="{{ url_for('home.index') }}">
             Журнал посещаемости
         </a>
         <div class="d-flex">
@@ -23,7 +20,6 @@
         </div>
     </div>
 </nav>
-
 <div class="nav-scroller bg-light border-top border-bottom">
     <nav aria-label="Secondary navigation" class="nav container nav-underline">
         {{ menu_item('.group', 'Моя группа') }}
@@ -34,8 +30,6 @@
         {% endif %}
     </nav>
 </div>
-
-
 <div class="container">
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
@@ -48,10 +42,7 @@
     {% endif %}
     {% endwith %}
 </div>
-
 {% block content %}{% endblock %}
-
 </body>
 <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
-
 </html>

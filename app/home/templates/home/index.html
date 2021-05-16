@@ -1,4 +1,4 @@
-{% extends 'info/base.html' %}
+{% extends 'home/base.html' %}
 {% block title %}{{ title }}{% endblock %}
 {% block content %}
 <div class="h-100 d-flex justify-content-center align-items-center p-4">
@@ -18,7 +18,6 @@
         </form>
     </div>
 </div>
-
 <div class="toast-container position-absolute bottom-0 end-0 m-2">
     <div aria-atomic="true" aria-live="assertive" class="toast align-items-center show text-white bg-primary"
          id="bottomMessage" role="alert">
@@ -38,7 +37,6 @@
                     type="button"></button>
         </div>
     </div>
-
     <div aria-atomic="true" aria-live="assertive" class="toast align-items-center show text-white bg-success"
          id="bottomInfoMessage" role="alert">
         <div class="d-flex">
@@ -50,8 +48,6 @@
         </div>
     </div>
 </div>
-
-
 <script>
 var bottomMessage = document.getElementById('bottomMessage')
 var bottomInfoMessage = document.getElementById('bottomInfoMessage')
