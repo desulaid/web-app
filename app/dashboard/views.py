@@ -164,14 +164,13 @@ def group_save(id: int):
             else:
                 flash(f'Удален студент {item}', 'danger')
 
-                posts = db.session.query(Post).filter_by(profile=id).all()
+                posts = Post.query.filter_by(profile=id).all()
                 for post in posts:
-                    tasks = post.tasks.filter_by(student=id).where(student.id == student.id).all()
+                    tasks = post.tasks.filter_by(student=id).all()
                     for task in tasks:
                         db.session.delete(task)
 
                 flash(f'Все связанные со студентом {item} записи удалены', 'danger')
-
                 db.session.delete(student)
 
     db.session.commit()

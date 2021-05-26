@@ -5,7 +5,7 @@
     <div class="text-center">
         <h1 class="display-6 fw-bold">{{ header }}</h1>
         <p class="lead mb-4">Весь учет посещаемости.</p>
-        <form method="post">
+        <form method="post" action="{{ url_for('.statistic') }}">
             <div class="input-group input-group-sm mb-3">
                 <select class="form-select" name="group">
                     {% for group in groups %}

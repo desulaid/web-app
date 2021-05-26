@@ -1,0 +1,39 @@
+{% extends 'home/base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        {{ header_name(header) }}
+    </div>
+    <div class="row mt-4 border-bottom p-2">
+        <table class="table table-sm table-striped table-hover table-borderless">
+            <thead>
+            <tr>
+                <th scope="col">Студент</th>
+                <th scope="col">Название</th>
+                <th scope="col">Присутствие</th>
+                <th scope="col">Комментарий</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for student in student_data %}
+            <tr>
+                <td>
+                    {{ student.name }}
+                </td>
+                <td>
+                    {{ student.title }} <span class="badge bg-info text-dark">({{ student.time }})</span>
+                </td>
+                <td>
+                    <input class="form-check-input" disabled type="checkbox" {{ 'checked' if student.attended }} >
+                </td>
+                <td>
+                    {{ student.comment }}
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
