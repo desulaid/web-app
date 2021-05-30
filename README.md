@@ -1,5 +1,8 @@
 # web ~~app~~
 
+![screens/Preview.png](./screens/Preview.png "Главная страница. Пример.")
+
+
 #### Инструкаж
 
 ```shell
