@@ -4,16 +4,17 @@
 <div class="h-100 d-flex justify-content-center align-items-center p-4">
     <div class="text-center">
         <p class="display-6">{{ header }}</p>
-        <form method="post" class="form-auth">
+        <form class="form-auth" method="post">
             {{ form.csrf_token }}
-                {{ form.name(class='form-control') }}
-                {{ form.login(class='form-control') }}
-                {{ form.password(class='form-control') }}
-                {{ form.confirm(class='form-control') }}
-                {{ form.submit(class='form-control btn btn-outline-primary mt-1') }}
+            {{ form.name(class='form-control') }}
+            {{ form.login(class='form-control') }}
+            {{ form.password(class='form-control') }}
+            {{ form.confirm(class='form-control') }}
+            {{ form.submit(class='form-control btn btn-outline-primary mt-1') }}
         </form>
         <div class="mt-1 border-top">
-            <p class="mt-2">У меня уже <a class="text-decoration-none" href="{{ url_for('.login') }}">есть</a> аккаунт.</p>
+            <p class="mt-2">У меня уже <a class="text-decoration-none" href="{{ url_for('.login') }}">есть</a> аккаунт.
+            </p>
         </div>
     </div>
 </div>

@@ -5,7 +5,7 @@
     <div class="text-center">
         <h1 class="display-6 fw-bold">{{ header }}</h1>
         <p class="lead mb-4">Весь учет посещаемости.</p>
-        <form method="post" action="{{ url_for('.statistic') }}">
+        <form action="{{ url_for('.statistic') }}" method="post">
             <div class="input-group input-group-sm mb-3">
                 <select class="form-select" name="group">
                     {% for group in groups %}
@@ -24,7 +24,8 @@
         <div class="d-flex">
             <div class="toast-body">
                 {% if not user.is_authenticated %}
-                Если <b>вы староста</b>, <a class="text-light text-decoration-none" href="{{ url_for('profile.login') }}"><b>авторизуйся</b></a>
+                Если <b>вы староста</b>, <a class="text-light text-decoration-none"
+                                            href="{{ url_for('profile.login') }}"><b>авторизуйся</b></a>
                 на
                 сайте, чтобы иметь доступ к панели.
                 {% else %}
@@ -41,7 +42,8 @@
          id="bottomInfoMessage" role="alert">
         <div class="d-flex">
             <div class="toast-body">
-                Есть вопросы? <a class="text-light text-decoration-none" href="#"><b>Здесь</b></a> вы можете получить справку!
+                Есть вопросы? <a class="text-light text-decoration-none" href="#"><b>Здесь</b></a> вы можете получить
+                справку!
             </div>
             <button aria-label="Close" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
                     type="button"></button>
@@ -59,5 +61,7 @@ bottomMessage.onclick = () => {
 bottomInfoMessage.onclick = () => {
     bottomInfoMessage.setAttribute('hidden', true)
 }
+
+
 </script>
 {% endblock %}

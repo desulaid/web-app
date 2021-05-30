@@ -4,8 +4,8 @@ DEBUG = True
 TESTING = False
 APP = environ['FLASK_APP']
 ENV = environ['FLASK_ENV']
-SECRET_KEY = environ.get('SECRET_KEY', 'askdjalJ@KJLJdalsdjladla')
-SQLALCHEMY_DATABASE_URI = environ.get('ALCHEMY_DATABASE_URL', 'sqlite:///database/app.sqlite')
+SECRET_KEY = environ.get ('SECRET_KEY', 'askdjalJ@KJLJdalsdjladla')
+SQLALCHEMY_DATABASE_URI = environ.get ('ALCHEMY_DATABASE_URL', 'sqlite:///database/app.sqlite')
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 DATA = {

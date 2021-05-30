@@ -16,27 +16,27 @@
     </div>
 </nav>
 <div class="container">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-        {% for category, message in messages %}
-        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
-        </div>
-        {% endfor %}
-        {% endif %}
-        {% endwith %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
 
-        {% if form %}
-        {% if form.errors %}
-        {% for key in form.errors %}
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            {{ ''.join(form.errors[key]) }}
-            <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
-        </div>
-        {% endfor %}
-        {% endif %}
-        {% endif %}
+    {% if form %}
+    {% if form.errors %}
+    {% for key in form.errors %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        {{ ''.join(form.errors[key]) }}
+        <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endif %}
 </div>
 {% block content %} {% endblock %}
 <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
