@@ -54,6 +54,7 @@ def statistic ():
         title=f'Просмотри статистика за {date}',
         header=f'Группа {group_name.name}',
         student_data=student_data,
+        user=user,
     )
 
     print (student_data)
@@ -65,6 +66,7 @@ def faq ():
     context = dict (
         title='Статистика',
         header='Посещаемые занятия!',
+        user=user,
     )
 
     return render_template ('home/faq.html', **context)

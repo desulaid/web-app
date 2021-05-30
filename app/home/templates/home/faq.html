@@ -1,4 +1,63 @@
 {% extends 'home/base.html' %}
 {% block title %}{{ title }}{% endblock %}
 {% block content %}
+<div class="container">
+    <div class="row">
+        <nav class="nav flex-column border m-3">
+            <a class="nav-link text-dark" aria-current="page" href="#создать-группу">Как создать студентов в своей
+                группе?</a>
+            <a class="nav-link text-dark" aria-current="page" href="#создать-запись">Как создать запись?</a>
+            <a class="nav-link text-dark" aria-current="page" href="#просмотр-информации">Как посмтреть заполненую
+                информацию?</a>
+            <a class="nav-link text-dark" aria-current="page" href="#редактирование-профиля">Как изменить профиль?</a>
+            <a class="nav-link text-dark" aria-current="page" href="#верификация">Мой профиль не подвтержден. Что
+                делать?</a>
+        </nav>
+    </div>
+    <div class="row mt-3" id="создать-группу">
+        <h4>Как создать группу?</h4>
+        <p>Для создания группы, вы должны перейти в раздел панели управления и из главного меню выбрать пункт <a
+                class="text-decoration-none" href="{{ url_for('dashboard.group') }}">"Моя группа"</a></p>
+        <img class="img-thumbnail  mx-auto d-block" src="{{ url_for('static', filename='img/create_group.jpeg') }}"
+             style="width:auto;height:auto;">
+        <p>Затем, вам необходимо нажать на кнопку "Добавить", чтобы в форме появилась новая строка для ввода следущего
+            студента. Как вам список будет сформирован, вам необходимо будет нажать на иконку с тремя точками и выбрать
+            пункт "Сохранить" как показано на рисунке</p>
+        <img class="img-thumbnail mx-auto d-block" src="{{ url_for('static', filename='img/save_group.jpeg') }}"
+             style="width:auto;height:auto;">
+        <p><b>Важно!</b> Только заполненые поля засчитываются, пустые игнорируются и не будут добавлены в группу.</p>
+    </div>
+    <div class="row mt-3" id="создать-запись">
+        <h4>Как создать запись?</h4>
+        <p>Для создания записи, вы должны перейти в раздел панели управления и из главного меню выбрать пункт <a
+                class="text-decoration-none" href="{{ url_for('dashboard.create_post') }}">"Создать"</a></p>
+        <img class="img-thumbnail  mx-auto d-block" src="{{ url_for('static', filename='img/create_post.jpeg') }}"
+             style="width:auto;height:auto;">
+        <p>Как только вы заполните форму данными, ажмите кнопку "Сохранить".</p>
+        <p><b>Важно!</b></p>
+        <ul>
+            <li>Название записи должно обязательно присутствовать</li>
+            <li>Время и дата устанавливаются автоматически при создании записи.</li>
+            <li>Комментари не обязательны к заполнению.</li>
+        </ul>
+    </div>
+    <div class="row mt-3" id="просмотр-информации">
+        <h4>Как посмтреть заполненую информацию?</h4>
+        <p>Для посмотра информации о посещениях студента вам надо обратиться к <a class="text-no-decoration"
+                                                                                  href="{{ url_for('home.index') }}">"Главной
+            странице"</a> и от туда выбрать нужную вам <b>дату</b> и <b>группу</b> студента. После чего откроется
+            старница с отчетом обо всех занятих в этой группе в этот день.</p>
+        <img class="img-thumbnail  mx-auto d-block" src="{{ url_for('static', filename='img/show_stat.jpeg') }}"
+             style="width:auto;height:auto;">
+    </div>
+    <div class="row mt-3" id="редактирование-профиля">
+        <h4>Как изменить профиль?</h4>
+        <p>Перейдите на страницу <a class="text-no-decoration" href="{{ url_for('dashboard.settings') }}">Настройки</a>,
+            затем выполните на странице все нужные вам операции, а после чего нажмите "Сохранить."</p>
+    </div>
+    <div class="row mt-3" id="верификация">
+        <h4>Мой профиль не подвтержден. Что делать?</h4>
+        <p>Попробуйте связаться с администратором, чтобы он смог активировать вам профиль. По другому никак.</p>
+    </div>
+</div>
 {% endblock %}
