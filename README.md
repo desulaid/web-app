@@ -39,7 +39,7 @@ $ (.venv) flask run
 FLASK_APP=app:create_app()
 FLASK_ENV=development
 SECRET_KEY=рандомная строка
-ALCHEMY_DATABASE_URL=postgresql://логин:пароль@хост/бд
+ALCHEMY_DATABASE_URL=postgresql://postgres:123qwe@localhost/app
 ```
 
 #### Так, ссылочки

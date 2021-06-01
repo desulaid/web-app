@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, flash
 from flask_login import current_user as user
 
-from app.database import Group, Profile, Task, Student
+from app.database import Group, Profile, Task, Student, Post
 
 home = Blueprint ('home', __name__, template_folder='templates')
 
@@ -39,6 +39,8 @@ def statistic ():
             if item.datetime.strftime ('%Y-%m-%d') == date:
                 student = Student.query.get (item.student)
                 student_data.append ({
+                    'group_id': group_id,
+                    'id': student.id,
                     'name': student.name,
                     'attended': item.attended,
                     'comment': item.comment,
@@ -70,3 +72,35 @@ def faq ():
     )
 
     return render_template ('home/faq.html', **context)
+
+
+@home.route ('/student/<student_id>/group/<group_id>', methods=['GET'])
+def student_stat (student_id, group_id):
+    student = Student.query.get(student_id)
+    group_name = Group.query.get(group_id)
+    profile = Profile.query.filter_by(group=group_id).first()
+    student_data = []
+
+    if profile:
+        # posts = Post.query.filter_by (profile=profile.id).all ()
+        tasks = Task.query.where(Student.profile == profile.id).all ()
+        attended_count = Task.query.where(Student.profile == profile.id).filter_by(attended=False).all ()
+        for task in tasks:
+            student_data.append({
+                'name': task.title,
+                'date': task.datetime.strftime ('%Y-%m-%d'),
+                'time': task.datetime.strftime('%H:%m'),
+                'attended_count': len(attended_count),
+                'count': len(tasks)
+            })
+
+    print(student_data)
+
+    context = dict (
+        title=f'Индивидуальная статистика для студента {student.name}',
+        header=f'Студент {student.name}',
+        user=user,
+        student_data=student_data
+    )
+
+    return render_template ('home/stat/student.html', **context)

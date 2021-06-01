@@ -95,7 +95,7 @@ def verify ():
 
     context = dict (
         title='Подтверждение профилей',
-        header='Верфикация',
+        header='Верификация',
         user=user,
         profiles=profiles
     )

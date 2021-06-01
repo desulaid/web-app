@@ -1,0 +1,39 @@
+{% extends 'home/base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        {{ header_name(header) }}
+    </div>
+    <div class="row mt-4 border-bottom p-2">
+        <table class="table table-sm table-striped table-hover table-borderless">
+            <thead>
+            <tr>
+                <th scope="col">Мероприятие</th>
+                <th scope="col">Дата</th>
+                <th scope="col">Всего занятий</th>
+                <th scope="col">Пропущено</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for i in student_data %}
+            <tr>
+                <td>
+                    {{ i.name }}
+                </td>
+                <td>
+                    {{ i.date }} / {{ i.time }}
+                </td>
+                <td>
+                    {{ i.count }}
+                </td>
+                <td>
+                    {{ i.attended_count }}
+                </td>
+                {% endfor %}
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
