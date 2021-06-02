@@ -22,25 +22,29 @@
                 {{ i.name }} - {{ i.login }}
             </li>
             <li class="list-group-item">
-                <button type="button" class="btn mt-2 mb-2 btn-primary" data-bs-toggle="modal" data-bs-target="#delete{{ i.login }}">
+                <button class="btn mt-2 mb-2 btn-primary" data-bs-target="#delete{{ i.login }}" data-bs-toggle="modal"
+                        type="button">
                     Удалить профиль
                 </button>
-                <div class="modal fade" id="delete{{ i.login }}" tabindex="-1" aria-labelledby="delete{{ i.login }}"
-                     aria-hidden="true">
+                <div aria-hidden="true" aria-labelledby="delete{{ i.login }}" class="modal fade"
+                     id="delete{{ i.login }}"
+                     tabindex="-1">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="delete{{ i.login }}Label">Подтвердите</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
+                                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"
+                                        type="button"></button>
                             </div>
                             <div class="modal-body">
                                 <p>Удалить профиль <b>{{ i.name }}</b>?</p>
-                                <p>Это действие <b>невозможно</b> будет отменить. Так же, все записи, сделанные аккаунтом, будут сохранены на сайте.</p>
+                                <p>Это действие <b>невозможно</b> будет отменить. Так же, все записи, сделанные
+                                    аккаунтом, будут сохранены на сайте.</p>
                             </div>
                             <div class="modal-footer">
                                 <a class="btn btn-outline-success" data-bs-dismiss="modal">Не удалять</a>
-                                <a href="{{ url_for('.users_delete', name=i.login) }}" class="btn btn-outline-danger">Да, удалить</a>
+                                <a class="btn btn-outline-danger" href="{{ url_for('.users_delete', name=i.login) }}">Да,
+                                    удалить</a>
                             </div>
                         </div>
                     </div>

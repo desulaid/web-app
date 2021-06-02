@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, flash
 from flask_login import current_user as user
 
-from app.database import Group, Profile, Task, Student, Post
+from app.database import Group, Profile, Task, Student
 
 home = Blueprint('home', __name__, template_folder='templates')
 
