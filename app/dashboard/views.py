@@ -110,6 +110,7 @@ def verifying(login: str):
     profile = Profile.query.filter_by(login=login).first()
 
     if status:
+        profile.role = 1
         profile.verify = True
         db.session.commit()
 
@@ -229,3 +230,35 @@ def save_post(id: int):
         flash('Запись добавлена', 'success')
 
     return redirect(url_for('.create_post'))
+
+
+@dashboard.route('/users', methods=['GET'])
+@login_required
+def users():
+    if user.id != 1:
+        abort(404)
+
+    profiles = Profile.query.filter_by(verify=True).all()
+
+    context = dict(
+        title='Зарегистрированные пользователи',
+        header='Аккаунты',
+        user=user,
+        profiles=profiles
+    )
+
+    return render_template('dashboard/profiles.html', **context)
+
+
+@dashboard.route('/users/delete/<name>', methods=['GET'])
+@login_required
+def users_delete(name):
+    profile = Profile.query.filter_by(login=name).first()
+
+    if not profile:
+        return abort(404)
+
+    db.session.delete(profile)
+    db.session.commit()
+
+    return redirect(url_for('.users'))
