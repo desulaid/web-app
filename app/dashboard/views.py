@@ -264,7 +264,35 @@ def users_delete(name):
     return redirect(url_for('.users'))
 
 
-@dashboard.route('/report/<id>', methods=['POST'])
+@dashboard.route('/report', methods=['POST'])
 @login_required
-def report(id):
-    return 'Ok'
+def report():
+    from datetime import datetime
+
+    start_date = datetime.strptime(request.form['start-date'], '%Y-%m-%d')
+    finish_date = datetime.strptime(request.form['finish-date'], '%Y-%m-%d')
+
+    students = Student.query.filter_by(profile=user.id).all()
+    data = {}
+
+    for student in students:
+        data[f'{student.id}'] = {
+            'name': student.name
+        }
+
+        tasks = Task.query.filter_by(student=student.id).where(
+            start_date <= Task.datetime).where(finish_date >= Task.datetime).all()
+
+        for task in tasks:
+            data[f'{student.id}'].update({
+                task.title: {
+                    'attended': task.attended,
+                    'comment': task.comment,
+                    'date': task.datetime.strftime('%Y-%m-%d'),
+                    'time': task.datetime.strftime('%H:%M')
+                }
+            })
+
+    doc = request.form['doc-name']
+
+    return f'{data}'

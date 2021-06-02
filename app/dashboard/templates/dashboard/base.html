@@ -56,9 +56,9 @@
             </div>
             <div class="modal-body">
                 <p>Выберите, за какой период вы хотите сформировать отчет.</p>
-                <form method="post" action="{{ url_for('.report', id=user.id) }}">
+                <form method="post" action="{{ url_for('.report') }}">
                     <div class="input-group input-group-sm mb-3">
-                        <input name="name" class="form-control" type="text" placeholder="Название документа...">
+                        <input name="doc-name" class="form-control" type="text" placeholder="Название документа...">
                     </div>
                     <div class="input-group input-group-sm mb-3">
                         <input name="start-date" class="form-control" title="Начало" type="date">
