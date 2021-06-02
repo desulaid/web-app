@@ -56,10 +56,13 @@
             </div>
             <div class="modal-body">
                 <p>Выберите, за какой период вы хотите сформировать отчет.</p>
-                <form>
+                <form method="post" action="{{ url_for('.report', id=user.id) }}">
                     <div class="input-group input-group-sm mb-3">
-                        <input class="form-control" title="Начало" type="date">
-                        <input class="form-control" title="Конец" type="date">
+                        <input name="name" class="form-control" type="text" placeholder="Название документа...">
+                    </div>
+                    <div class="input-group input-group-sm mb-3">
+                        <input name="start-date" class="form-control" title="Начало" type="date">
+                        <input name="finish-date" class="form-control" title="Конец" type="date">
                     </div>
                     <div class="input-group input-group-sm mb-3">
                         <input class="btn btn-success" type="submit">

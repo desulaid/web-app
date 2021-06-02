@@ -262,3 +262,9 @@ def users_delete(name):
     db.session.commit()
 
     return redirect(url_for('.users'))
+
+
+@dashboard.route('/report/<id>', methods=['POST'])
+@login_required
+def report(id):
+    return 'Ok'
