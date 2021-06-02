@@ -269,8 +269,10 @@ def users_delete(name):
 def report():
     from datetime import datetime
 
-    start_date = datetime.strptime(request.form['start-date'], '%Y-%m-%d')
-    finish_date = datetime.strptime(request.form['finish-date'], '%Y-%m-%d')
+    date_from_str = lambda x: datetime.strptime(x, '%Y-%m-%d')
+
+    start_date = date_from_str(request.form['start-date'])
+    finish_date = date_from_str(request.form['finish-date'])
 
     students = Student.query.filter_by(profile=user.id).all()
     data = {}
