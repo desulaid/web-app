@@ -19,7 +19,9 @@
             {% for student in student_data %}
             <tr>
                 <td>
-                    <a class="text-no-decoration" href="{{ url_for('.student_stat', student_id=student.id, group_id=student.group_id) }}">{{ student.name }}</a>
+                    <a class="text-no-decoration"
+                       href="{{ url_for('.student_stat', student_id=student.id, group_id=student.group_id) }}">{{
+                        student.name }}</a>
                 </td>
                 <td>
                     {{ student.title }} <span class="badge bg-info text-dark">({{ student.time }})</span>
