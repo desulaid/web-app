@@ -5,7 +5,8 @@ from flask import Blueprint, send_from_directory, current_app as app
 from flask import render_template, request, flash, redirect, url_for, abort
 from flask_login import login_required, current_user as user
 from openpyxl import Workbook
-from openpyxl.styles import PatternFill, Border, Side, Alignment, Protection, Font
+from openpyxl.styles import Font
+
 from app.database import db, Group, Teacher, Profile, Student, Post, Task
 
 dashboard = Blueprint('dashboard', __name__, template_folder='templates', url_prefix='/dashboard')
