@@ -205,7 +205,6 @@ def save_post(id: int):
     name = form['post-name']
 
     del form['post-name']
-
     if not name:
         flash('Название записи обязатнльео к заполнению', 'warning')
     elif not form:
@@ -213,10 +212,18 @@ def save_post(id: int):
     else:
         for key in form:
             data = match(r'student\-(\d+)\-(.+)', key)
-            item = [bool(form[f'student-{data.group(1)}-attended']), form[f'student-{data.group(1)}-comment']]
+
+            # Страшна, очень страшна
+            try:
+                if form[f'student-{data.group(1)}-attended'] == 'yes':
+                    item = [True, form[f'student-{data.group(1)}-comment']]
+            except KeyError:
+                item = [False, form[f'student-{data.group(1)}-comment']]
+
             students[f'{data.group(1)}'] = item
 
         post = Post(profile=id)
+
         for i in students:
             post.tasks.append(Task(title=name,
                                    attended=students[i][0],

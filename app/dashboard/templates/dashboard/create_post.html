@@ -2,57 +2,41 @@
 {% block title %}{{ title }}{% endblock %}
 {% block content %}
 <div class="container mt-4">
-    <div class="row align-items-center">
+    <div class="row">
         {{ header_name(header) }}
         <div class="col">
             <div class="d-flex justify-content-end">
                 <label class="nav-link text-dark sumbit-form" for="hidden-submit">Сохранить</label>
             </div>
         </div>
-        <div class="row mt-2 border-bottom">
-            <div class="col-md mb-2">
-                <div class="table-responsive">
-                    <form action="{{ url_for('.save_post', id=user.id) }}" method="post">
-                        <small class="text-muted">Укажите название занятия</small>
-                        <div class="input-group input-group-sm mb-3 mt-2">
-                            <input class="form-control" id="post-name-id" name="post-name" title="Название занятия"
-                                   type="text">
-                        </div>
-                        <small class="text-muted">Отметьте всех студентов по списку</small>
-                        <table class="table table-bordered table-hover mt-2">
-                            <thead>
-                            <tr>
-                                <td>Студент</td>
-                                <td>Нахождение</td>
-                                <td>Комментарий</td>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for i in students%}
-                            <tr>
-                                <td scope="row">{{ i.name }}</td>
-                                <td>
-                                    <select class="form-select form-select-sm" name="student-{{ i.id }}-attended">
-                                        <option value="yes">Да</option>
-                                        <option value="">Нет</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <input class="form-control form-control-sm" name="student-{{ i.id }}-comment"
-                                           placeholder="По желанию"
-                                           type="text">
-                                </td>
-                            </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                        <input id="hidden-submit" type="submit" value="submit"/>
-                    </form>
-                </div>
-            </div>
-        </div>
     </div>
-    <style>
+    <div class="row mt-2">
+        <form action="{{ url_for('.save_post', id=user.id) }}" method="post">
+            <small class="text-muted">Укажите название занятия</small>
+            <div class="input-group input-group-sm mb-3 mt-2">
+                <input class="form-control" id="post-name-id" name="post-name" title="Название занятия"
+                       type="text">
+            </div>
+            <small class="text-muted">Отметьте всех студентов по списку</small>
+            <ul class="list-group list-group-flush mt-3">
+                {% for i in students%}
+                <li class="list-group-item p-0 mt-2 list-group-item-action">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input me-3" value="yes" type="checkbox" checked="checked" aria-label="{{ i.name }}" name="student-{{ i.id }}-attended">
+                        {{ i.name }}
+                    </div>
+                    <input class="form-control form-control-sm mt-3 mb-3" name="student-{{ i.id }}-comment"
+                           placeholder="Комментарий"
+                           type="text">
+                </li>
+                {% endfor %}
+            </ul>
+            <input id="hidden-submit" type="submit" value="submit"/>
+        </form>
+    </div>
+</div>
+</div>
+<style>
     #hidden-submit {
         width: 0px;
         height: 0px;
@@ -69,5 +53,7 @@
 
 
 
-    </style>
-    {% endblock %}
+
+
+</style>
+{% endblock %}
