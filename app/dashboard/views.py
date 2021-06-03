@@ -279,9 +279,10 @@ def users_delete(name):
 @login_required
 def report():
     wb = Workbook()
-
+    header_style = Font(bold=True)
     main_page = wb.active
-    main_page.title = 'Группа NN'
+
+    group = Group.query.get(user.group)
     doc = f'{request.form["doc-name"]}.xlsx'
 
     date_from_str: datetime = lambda x: datetime.strptime(x, '%Y-%m-%d')
@@ -292,7 +293,19 @@ def report():
     students = Student.query.filter_by(profile=user.id).all()
     data = []
 
-    header_style = Font(bold=True)
+    main_page.title = f'Группа {group.name}'
+    main_page['A1'] = 'Староста'
+    main_page['A1'].font = header_style
+    main_page['B1'] = f'{user.name}'
+
+    teacher = Teacher.query.get(user.teacher)
+    main_page['A2'] = 'Классный руководитель'
+    main_page['A2'].font = header_style
+    main_page['B2'] = f'{teacher.name}'
+
+    main_page['A3'] = 'Отчет сформирован из системы мониторинга'
+    main_page['A3'].font = header_style
+    main_page['B3'] = datetime.now()
 
     for student in students:
         tasks = Task.query.filter_by(student=student.id).where(

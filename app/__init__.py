@@ -3,7 +3,7 @@ __version__ = '0.0.2'
 __email__ = 'desulaid@gmail.com'
 
 from flask import Flask
-
+import os
 from .cli import cli
 from .database import db
 from .profile import login_manager
@@ -12,6 +12,10 @@ from .profile import login_manager
 def create_app() -> Flask:
     app = Flask(__name__)
     app.config.from_object('app.config')
+
+    if not os.path.exists(app.config['UPLOAD_FOLDER']):
+        os.mkdir(app.config['UPLOAD_FOLDER'])
+
     app.cli.add_command(cli)
     db.init_app(app)
     login_manager.init_app(app)

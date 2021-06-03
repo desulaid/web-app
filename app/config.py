@@ -3,6 +3,7 @@ from os import environ, path
 APP_ROOT = path.dirname(path.abspath(__file__))
 UPLOAD_FOLDER = path.join(APP_ROOT, 'files')
 
+
 DEBUG = True
 TESTING = False
 APP = environ['FLASK_APP']
