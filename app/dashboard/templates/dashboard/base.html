@@ -58,11 +58,12 @@
                 <p>Выберите, за какой период вы хотите сформировать отчет.</p>
                 <form action="{{ url_for('.report') }}" method="post">
                     <div class="input-group input-group-sm mb-3">
-                        <input class="form-control" name="doc-name" placeholder="Название документа..." type="text">
+                        <input class="form-control" name="doc-name" placeholder="Название документа..." required
+                               type="text">
                     </div>
                     <div class="input-group input-group-sm mb-3">
-                        <input class="form-control" name="start-date" title="Начало" type="date">
-                        <input class="form-control" name="finish-date" title="Конец" type="date">
+                        <input class="form-control" name="start-date" required title="Начало" type="date">
+                        <input class="form-control" name="finish-date" required title="Конец" type="date">
                     </div>
                     <div class="input-group input-group-sm mb-3">
                         <input class="btn btn-success" type="submit">

@@ -269,7 +269,7 @@ def users_delete(name):
 def report():
     from datetime import datetime
 
-    date_from_str = lambda x: datetime.strptime(x, '%Y-%m-%d')
+    date_from_str: datetime = lambda x: datetime.strptime(x, '%Y-%m-%d')
 
     start_date = date_from_str(request.form['start-date'])
     finish_date = date_from_str(request.form['finish-date'])
@@ -294,6 +294,9 @@ def report():
                     'time': task.datetime.strftime('%H:%M')
                 }
             })
+
+    if not data:
+        flash('Нет данных для отчета', 'warning')
 
     doc = request.form['doc-name']
 

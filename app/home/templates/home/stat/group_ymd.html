@@ -1,41 +1,35 @@
 {% extends 'home/base.html' %}
 {% block title %}{{ title }}{% endblock %}
 {% block content %}
-<div class="container">
+<div class="container mt-4">
     <div class="row">
         {{ header_name(header) }}
+        <div class="row mt-2">
+            <small class="text-muted">
+                Есть вопросы? <a class="text-no-decoration" href="{{ url_for('.faq') }}">Ознакомьтесь со справкой</a>
+            </small>
+        </div>
     </div>
-    <div class="row mt-4 border-bottom p-2">
-        <table class="table table-sm table-striped table-hover table-borderless">
-            <thead>
-            <tr>
-                <th scope="col">Студент</th>
-                <th scope="col">Название</th>
-                <th scope="col">Присутствие</th>
-                <th scope="col">Комментарий</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for student in student_data %}
-            <tr>
-                <td>
-                    <a class="text-no-decoration"
-                       href="{{ url_for('.student_stat', student_id=student.id, group_id=student.group_id) }}">{{
-                        student.name }}</a>
-                </td>
-                <td>
-                    {{ student.title }} <span class="badge bg-info text-dark">({{ student.time }})</span>
-                </td>
-                <td>
-                    <input class="form-check-input" disabled type="checkbox" {{ 'checked' if student.attended }} >
-                </td>
-                <td>
-                    {{ student.comment }}
-                </td>
-            </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+    {% for i in data %}
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <b>{{ i.name }}</b>
+        </div>
+        <div class="col-md mt-2">
+            <ul class="list-group list-group-numbered">
+                {% for j in i.lessons %}
+                <li class="list-group-item d-flex justify-content-between align-items-start
+                        {{ 'list-group-item-success' if j.attended else 'list-group-item-danger' }}">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold">{{ j.title }}</div>
+                        {{ j.comment }}
+                    </div>
+                    <span class="badge bg-primary rounded-pill">{{ j.time }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
+    {% endfor %}
 </div>
 {% endblock %}

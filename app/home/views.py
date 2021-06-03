@@ -30,36 +30,43 @@ def statistic():
     date = request.form['date']
     group_name = Group.query.get(group_id)
     profile = Profile.query.filter_by(group=group_id).first()
-    student_data = []
 
-    if profile:
-        tasks = Task.query.where(Student.profile == profile.id).all()
+    data = []
 
-        for item in tasks:
-            if item.datetime.strftime('%Y-%m-%d') == date:
-                student = Student.query.get(item.student)
-                student_data.append({
-                    'group_id': group_id,
-                    'id': student.id,
-                    'name': student.name,
-                    'attended': item.attended,
-                    'comment': item.comment,
-                    'title': item.title,
-                    'time': item.datetime.strftime('%H:%m')
-                })
-    else:
+    if not profile:
         flash('У этой группы не зарегистрирован староста', 'warning')
+    else:
+        students = Student.query.filter_by(profile=profile.id).all()
 
-    if not student_data:
-        flash('Нет записей за это время', 'warning')
+        for i, student in enumerate(students):
+            tasks = Task.query.filter_by(student=student.id).all()
+            lessons = []
+
+            for task in tasks:
+
+                if task.datetime.strftime('%Y-%m-%d') == date:
+                    lessons.append({
+                        'title': task.title,
+                        'attended': task.attended,
+                        'comment': task.comment,
+                        'time': task.datetime.strftime('%H:%M')
+                    })
+
+            data.append({
+                'name': student.name,
+                'lessons': lessons
+            })
+
+        if not data[0]['lessons']:
+            flash('Отсутствуют данные за этот период', 'warning')
+
     context = dict(
         title=f'Просмотри статистика за {date}',
-        header=f'Группа {group_name.name}',
-        student_data=student_data,
+        header=f'Группа {group_name.name} в {date}',
+        data=data,
         user=user,
     )
 
-    print(student_data)
     return render_template('home/stat/group_ymd.html', **context)
 
 
