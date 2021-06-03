@@ -11,3 +11,5 @@ python-dotenv==0.17.1
 SQLAlchemy==1.4.15
 Werkzeug==2.0.0
 WTForms==2.3.3
+
+openpyxl~=3.0.7

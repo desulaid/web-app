@@ -1,7 +1,11 @@
-from flask import Blueprint
+import os
+from datetime import datetime
+
+from flask import Blueprint, send_from_directory, current_app as app
 from flask import render_template, request, flash, redirect, url_for, abort
 from flask_login import login_required, current_user as user
-
+from openpyxl import Workbook
+from openpyxl.styles import PatternFill, Border, Side, Alignment, Protection, Font
 from app.database import db, Group, Teacher, Profile, Student, Post, Task
 
 dashboard = Blueprint('dashboard', __name__, template_folder='templates', url_prefix='/dashboard')
@@ -274,7 +278,11 @@ def users_delete(name):
 @dashboard.route('/report', methods=['POST'])
 @login_required
 def report():
-    from datetime import datetime
+    wb = Workbook()
+
+    main_page = wb.active
+    main_page.title = 'Группа NN'
+    doc = f'{request.form["doc-name"]}.xlsx'
 
     date_from_str: datetime = lambda x: datetime.strptime(x, '%Y-%m-%d')
 
@@ -284,18 +292,37 @@ def report():
     students = Student.query.filter_by(profile=user.id).all()
     data = []
 
+    header_style = Font(bold=True)
+
     for student in students:
         tasks = Task.query.filter_by(student=student.id).where(
             start_date <= Task.datetime).where(finish_date >= Task.datetime).all()
+
+        page = wb.create_sheet(title=student.name)
+
+        page_headers = [
+            'Дата и время',
+            'Название',
+            'Присуствовал',
+            'Причина'
+        ]
+
+        for col, val in enumerate(page_headers, start=1):
+            cell = page.cell(column=col, row=1, value=val)
+            cell.font = header_style
+
         lessons = []
 
-        for task in tasks:
-            lessons.append({
-                'title': task.title,
-                'attended': task.attended,
-                'comment': task.comment,
-                'time': task.datetime.strftime('%H:%M')
-            })
+        for row, task in enumerate(tasks, start=3):
+            columns = [
+                task.datetime,
+                task.title,
+                'Да' if task.attended else 'Нет',
+                task.comment,
+            ]
+
+            for col, val in enumerate(columns, start=1):
+                page.cell(column=col, row=row, value=val)
 
         data.append({
             'name': student.name,
@@ -305,6 +332,12 @@ def report():
     if not data:
         flash('Нет данных для отчета', 'warning')
 
-    doc = request.form['doc-name']
+    wb.save(os.path.join(app.config['UPLOAD_FOLDER'], doc))
 
-    return f'{data}'
+    return redirect(url_for('.download_file', filename=doc))
+
+
+@dashboard.route('/download/<filename>', methods=['GET'])
+@login_required
+def download_file(filename):
+    return send_from_directory(app.config["UPLOAD_FOLDER"], filename)

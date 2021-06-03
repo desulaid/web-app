@@ -1,3 +1,5 @@
 /.venv/
 # Иногда так проще
 /app/database/app.sqlite
+# Тут все файлы хранятся
+/app/files/
