@@ -38,12 +38,11 @@ def statistic():
     else:
         students = Student.query.filter_by(profile=profile.id).all()
 
-        for i, student in enumerate(students):
+        for student in students:
             tasks = Task.query.filter_by(student=student.id).all()
             lessons = []
 
             for task in tasks:
-
                 if task.datetime.strftime('%Y-%m-%d') == date:
                     lessons.append({
                         'title': task.title,

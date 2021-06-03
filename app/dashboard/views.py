@@ -282,25 +282,25 @@ def report():
     finish_date = date_from_str(request.form['finish-date'])
 
     students = Student.query.filter_by(profile=user.id).all()
-    data = {}
+    data = []
 
     for student in students:
-        data[f'{student.id}'] = {
-            'name': student.name
-        }
-
         tasks = Task.query.filter_by(student=student.id).where(
             start_date <= Task.datetime).where(finish_date >= Task.datetime).all()
+        lessons = []
 
         for task in tasks:
-            data[f'{student.id}'].update({
-                task.title: {
-                    'attended': task.attended,
-                    'comment': task.comment,
-                    'date': task.datetime.strftime('%Y-%m-%d'),
-                    'time': task.datetime.strftime('%H:%M')
-                }
+            lessons.append({
+                'title': task.title,
+                'attended': task.attended,
+                'comment': task.comment,
+                'time': task.datetime.strftime('%H:%M')
             })
+
+        data.append({
+            'name': student.name,
+            'lessons': lessons
+        })
 
     if not data:
         flash('Нет данных для отчета', 'warning')
