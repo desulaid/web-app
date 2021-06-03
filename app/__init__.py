@@ -2,8 +2,10 @@ __author__ = 'desulaid'
 __version__ = '0.0.2'
 __email__ = 'desulaid@gmail.com'
 
-from flask import Flask
 import os
+
+from flask import Flask
+
 from .cli import cli
 from .database import db
 from .profile import login_manager
