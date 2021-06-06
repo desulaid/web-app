@@ -5,3 +5,4 @@ from .roles import Role
 from .student import Student
 from .task import Task
 from .teacher import Teacher
+from .file import File

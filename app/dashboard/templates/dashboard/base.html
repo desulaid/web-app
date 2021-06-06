@@ -28,7 +28,7 @@
         {% if user.role == 2 %}
         {{ menu_item('.verify', 'Верификация') }}
         {% endif %}
-        <a class="nav-link" data-bs-target="#userReport" data-bs-toggle="modal" href="#">Отчет</a>
+        {{ menu_item('.my_files', 'Отчеты') }}
     </nav>
 </div>
 <div class="container">
@@ -44,36 +44,6 @@
     {% endwith %}
 </div>
 {% block content %}{% endblock %}
-
-<div aria-hidden="true" aria-labelledby="userReportLabel" class="modal fade" data-bs-backdrop="static"
-     data-bs-keyboard="false"
-     id="userReport" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="userReportLabel">Сформировать отчет</h5>
-                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
-            </div>
-            <div class="modal-body">
-                <p>Выберите, за какой период вы хотите сформировать отчет.</p>
-                <form action="{{ url_for('.report') }}" method="post">
-                    <div class="input-group input-group-sm mb-3">
-                        <input class="form-control" name="doc-name" placeholder="Название документа..." required
-                               type="text">
-                    </div>
-                    <div class="input-group input-group-sm mb-3">
-                        <input class="form-control" name="start-date" required title="Начало" type="date">
-                        <input class="form-control" name="finish-date" required title="Конец" type="date">
-                    </div>
-                    <div class="input-group input-group-sm mb-3">
-                        <input class="btn btn-success" type="submit">
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
 </body>
 <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
 </html>

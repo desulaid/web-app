@@ -7,7 +7,7 @@ from flask_login import login_required, current_user as user
 from openpyxl import Workbook
 from openpyxl.styles import Font
 
-from app.database import db, Group, Teacher, Profile, Student, Post, Task
+from app.database import db, Group, Teacher, Profile, Student, Post, Task, File
 
 dashboard = Blueprint('dashboard', __name__, template_folder='templates', url_prefix='/dashboard')
 
@@ -284,7 +284,8 @@ def report():
     main_page = wb.active
 
     group = Group.query.get(user.group)
-    doc = f'{request.form["doc-name"]}.xlsx'
+    time_create = datetime.now().strftime("%m_%d_%Y_%H_%M")
+    doc = f'{user.login}_{time_create}.xlsx'
 
     date_from_str: datetime = lambda x: datetime.strptime(x, '%Y-%m-%d')
 
@@ -345,13 +346,53 @@ def report():
 
     if not data:
         flash('Нет данных для отчета', 'warning')
+    else:
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], doc)
+        wb.save(file_path)
 
-    wb.save(os.path.join(app.config['UPLOAD_FOLDER'], doc))
+        db.session.add(File(name=doc, profile=user.id))
+        db.session.commit()
 
-    return redirect(url_for('.download_file', filename=doc))
+    return redirect(url_for('.my_files'))
 
 
-@dashboard.route('/download/<filename>', methods=['GET'])
+@dashboard.route('/files', methods=['GET'])
+@login_required
+def my_files():
+    files = File.query.filter_by(profile=user.id).all()
+
+    context = dict(
+        user=user,
+        title='Файлы',
+        header='Мои отчеты',
+        files=files
+    )
+
+    return render_template('dashboard/files.html', **context)
+
+
+@dashboard.route('/download/file/<filename>', methods=['GET'])
 @login_required
 def download_file(filename):
     return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
+
+
+@dashboard.route('/delete/file/<filename>', methods=['GET'])
+@login_required
+def delete_file(filename):
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+
+    if os.path.exists(file_path):
+        os.remove(file_path)
+
+        file_db = File.query.filter_by(name=filename).first()
+
+        if file_db:
+            db.session.delete(file_db)
+
+        db.session.commit()
+
+        flash(f'Файл {filename} успешно удален', 'success')
+    else:
+        flash (f'Файл {filename} не сущесвует в базе данных', 'danger')
+    return redirect(url_for('.my_files'))
