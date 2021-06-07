@@ -1,15 +1,14 @@
 from os import environ, path
 
-APP_ROOT = path.dirname(path.abspath(__file__))
-UPLOAD_FOLDER = path.join(APP_ROOT, 'files')
-
+APP_ROOT = path.dirname (path.abspath (__file__))
+UPLOAD_FOLDER = path.join (APP_ROOT, 'files')
 
 DEBUG = True
 TESTING = False
 APP = environ['FLASK_APP']
 ENV = environ['FLASK_ENV']
-SECRET_KEY = environ.get('SECRET_KEY', 'askdjalJ@KJLJdalsdjladla')
-SQLALCHEMY_DATABASE_URI = environ.get('ALCHEMY_DATABASE_URL', 'sqlite:///database/app.sqlite')
+SECRET_KEY = environ.get ('SECRET_KEY', 'askdjalJ@KJLJdalsdjladla')
+SQLALCHEMY_DATABASE_URI = environ.get ('ALCHEMY_DATABASE_URL', 'sqlite:///database/app.sqlite')
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 DATA = {
