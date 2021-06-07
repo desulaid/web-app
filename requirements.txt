@@ -1,4 +1,6 @@
 click==8.0.0
+colorama==0.4.4
+et-xmlfile==1.1.0
 Flask==2.0.0
 Flask-Login==0.5.0
 Flask-SQLAlchemy==2.5.1
@@ -7,9 +9,9 @@ greenlet==1.1.0
 itsdangerous==2.0.0
 Jinja2==3.0.0
 MarkupSafe==2.0.0
+openpyxl==3.0.7
+psycopg2==2.8.6
 python-dotenv==0.17.1
 SQLAlchemy==1.4.15
 Werkzeug==2.0.0
 WTForms==2.3.3
-
-openpyxl~=3.0.7
