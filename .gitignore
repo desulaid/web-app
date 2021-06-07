@@ -1,5 +1,10 @@
 /.venv/
 /.idea/
+# Вот это мне не нужно хватать
+/app/static/js/bootstrap.bundle.min.js
+/app/static/js/bootstrap.bundle.min.js.map
+/app/static/css/bootstrap.min.css
+/app/static/css/bootstrap.min.css.map
 # Иногда так проще
 /app/database/app.sqlite
 # Тут все файлы хранятся
