@@ -15,10 +15,10 @@
         <ul class="list-group ">
             {% for i in files %}
             <li class="list-group-item d-flex justify-content-between">
-                <a class="text-decoration-none" href="{{ url_for('.download_file', filename=i.name) }}" download>{{
+                <a class="text-decoration-none" download href="{{ url_for('.download_file', filename=i.name) }}">{{
                     i.name }}</a>
                 <span class="badge bg-danger">
-                    <a href="{{ url_for('.delete_file', filename=i.name) }}" class="text-white">
+                    <a class="text-white" href="{{ url_for('.delete_file', filename=i.name) }}">
                         <span class="material-icons">
                         delete
                     </span>

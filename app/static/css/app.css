@@ -3,46 +3,54 @@
 
 html,
 body {
-  height: 95%;
+    height: 95%;
 }
+
 .form-auth {
     width: 100%;
     max-width: 350px;
     padding: 15px;
     margin: 0 auto;
 }
+
 .form-auth .form-control {
     height: auto;
 }
+
 .form-auth input {
     margin: 3px auto;
 }
+
 .nav-scroller {
-  position: relative;
-  z-index: 2;
-  height: 3.5rem;
-  overflow-y: hidden;
+    position: relative;
+    z-index: 2;
+    height: 3.5rem;
+    overflow-y: hidden;
 }
+
 .nav-scroller .nav {
-  display: flex;
-  flex-wrap: nowrap;
-  padding-bottom: 1rem;
-  margin-top: -1px;
-  overflow-x: auto;
-  color: rgba(255, 255, 255, .75);
-  text-align: center;
-  white-space: nowrap;
-  -webkit-overflow-scrolling: touch;
+    display: flex;
+    flex-wrap: nowrap;
+    padding-bottom: 1rem;
+    margin-top: -1px;
+    overflow-x: auto;
+    color: rgba(255, 255, 255, .75);
+    text-align: center;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
 }
+
 .nav-underline .nav-link {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-  color: #6c757d;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    color: #6c757d;
 }
+
 .nav-underline .nav-link:hover {
-  color: #007bff;
+    color: #007bff;
 }
+
 .nav-underline .active {
-  font-weight: 500;
-  color: #343a40;
+    font-weight: 500;
+    color: #343a40;
 }

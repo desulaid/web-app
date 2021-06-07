@@ -25,33 +25,32 @@
 </div>
 <script>
     let id = 0
-    const array =  {{ data|safe }}
+    const array = {
+    {
+        data | safe
+    }
+    }
     const form = document.getElementById("students-form")
-    
+
     array.forEach(value => {
         const groupField = addFormGroup()
         const inputText = addInputField('', value, id++)
         const buttonDelete = addDeleteButton(form, groupField)
-    
+
         groupField.appendChild(inputText)
         groupField.appendChild(buttonDelete)
         form.appendChild(groupField)
     })
-    
+
     document.getElementById("form-add-field").onclick = () => {
         const group = addFormGroup()
         const inputText = addInputField('Введите имя студента', '', id++)
         const buttonDelete = addDeleteButton(form, group)
-    
+
         group.appendChild(inputText)
         group.appendChild(buttonDelete)
         form.appendChild(group)
     }
-
-
-
-
-
 
 
 </script>
@@ -66,11 +65,6 @@
     .sumbit-form {
         cursor: pointer;
     }
-
-
-
-
-
 
 
 </style>

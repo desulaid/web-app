@@ -22,7 +22,8 @@
                 {% for i in students%}
                 <li class="list-group-item p-0 mt-2 list-group-item-action">
                     <div class="form-check form-switch">
-                        <input class="form-check-input me-3" value="yes" type="checkbox" checked="checked" aria-label="{{ i.name }}" name="student-{{ i.id }}-attended">
+                        <input aria-label="{{ i.name }}" checked="checked" class="form-check-input me-3" name="student-{{ i.id }}-attended"
+                               type="checkbox" value="yes">
                         {{ i.name }}
                     </div>
                     <input class="form-control form-control-sm mt-3 mb-3" name="student-{{ i.id }}-comment"
@@ -46,13 +47,6 @@
     .sumbit-form {
         cursor: pointer;
     }
-
-
-
-
-
-
-
 
 
 </style>

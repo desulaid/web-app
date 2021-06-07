@@ -16,7 +16,7 @@ const addDeleteButton = (formId, groupFieldId) => {
     return button
 }
 
-const addInputField = (placeholder=null, value=null, id) => {
+const addInputField = (placeholder = null, value = null, id) => {
     const input = document.createElement("input")
     input.type = "text"
     input.setAttribute("name", `student-name-${id}`)
