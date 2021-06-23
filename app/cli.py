@@ -79,7 +79,7 @@ def cli_exam() -> None:
                 hour = 8
                 minute = 00
 
-                date = datetime(2021, 6, day, hour, minute, 0)                 
+                date = datetime(2021, 2, day, hour, minute, 0)                 
                     
                 for lesson in data[key][f'{date.weekday()}']:                                      
                     if hour >= 18:
